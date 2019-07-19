@@ -1,0 +1,40 @@
+<div>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>My app</span>
+      <div fxShow="true" fxHide.lt-md class="navbar navbar--web">
+        <button mat-button (click)="onLogin()">Login</button>
+        <button mat-button [matMenuTriggerFor]="menu">PL</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>PL</button>
+          <button mat-menu-item>EN</button>
+        </mat-menu>
+      </div>
+
+      <button
+        mat-icon-button
+        (click)="sidenav.toggle()"
+        fxShow="true"
+        fxHide.gt-sm
+        class="navbar--mobile"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-sidenav-container fxFlexFill>
+    <mat-sidenav #sidenav>
+      <mat-nav-list>
+        <a (click)="sidenav.toggle()" mat-list-item>Close</a>
+
+        <a routerLink="/register" mat-list-item>Register</a>
+        <!--        <a routerLink="/login" mat-list-item>Login</a>-->
+        <button mat-button (click)="onLogin()">Login</button>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content fxFlexFill>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
