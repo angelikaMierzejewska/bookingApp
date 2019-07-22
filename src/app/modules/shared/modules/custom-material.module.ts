@@ -14,7 +14,8 @@ import {
   MatSelectModule,
   MatSnackBarModule,
   MatIconModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatCheckboxModule
 } from '@angular/material';
 @NgModule({
   declarations: [],
@@ -35,7 +36,8 @@ import {
     MatListModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatCheckboxModule
   ]
 })
 export class CustomMaterialModule {}

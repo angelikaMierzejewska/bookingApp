@@ -3,7 +3,11 @@
     <mat-toolbar-row>
       <span>My app</span>
       <div fxShow="true" fxHide.lt-md class="navbar navbar--web">
-        <button mat-button (click)="onLogin()">Login</button>
+        <button mat-button (click)="onLogin()" *ngIf="!user">Login</button>
+        <button mat-button *ngIf="user" routerLink="/profile">{{ user.login }} profile</button>
+
+        <button mat-button (click)="onLogin()" *ngIf="user">Logout</button>
+
         <button mat-button [matMenuTriggerFor]="menu">PL</button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item>PL</button>
@@ -28,8 +32,6 @@
       <mat-nav-list>
         <a (click)="sidenav.toggle()" mat-list-item>Close</a>
 
-        <a routerLink="/register" mat-list-item>Register</a>
-        <!--        <a routerLink="/login" mat-list-item>Login</a>-->
         <button mat-button (click)="onLogin()">Login</button>
       </mat-nav-list>
     </mat-sidenav>

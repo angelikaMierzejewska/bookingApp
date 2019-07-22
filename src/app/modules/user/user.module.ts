@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { LoginComponent } from './containers/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserDataService } from './services/user-data.service';
+import { ProfileComponent } from './containers/profile/profile.component';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, ProfileComponent],
   imports: [CommonModule, SharedModule, FormsModule, ReactiveFormsModule],
   entryComponents: [LoginComponent],
-  bootstrap: [LoginComponent]
+  bootstrap: [LoginComponent],
+  providers: [UserDataService]
 })
 export class UserModule {}

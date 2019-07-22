@@ -7,6 +7,13 @@
   border-radius: 20px;
   padding: 100px;
   width: 500px;
+
+  height: 500px;
+  transition: all 1s ease-in-out;
+
+  &--height {
+    height: 600px;
+  }
 }
 
 .user-form__img {
