@@ -1,1 +1,43 @@
 <p>search works!</p>
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <input
+      type="text"
+      placeholder="Assignee"
+      aria-label="Assignee"
+      matInput
+      [formControl]="myControl"
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{ option.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+<div class="card__box">
+  <mat-card class="card" *ngFor="let hotel of hotels">
+    <mat-card-header>
+      <mat-card-title>{{ hotel.name }}</mat-card-title>
+      <mat-card-subtitle>{{ hotel.location }}</mat-card-subtitle>
+    </mat-card-header>
+    <img
+      mat-card-image
+      src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+      alt="Photo of a Shiba Inu"
+    />
+    <mat-card-content>
+      <p></p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>LIKE</button>
+      <button mat-button>BOOK</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<mat-card class="card" *ngFor="let location of locations">
+  <p>{{ location }}</p>
+</mat-card>

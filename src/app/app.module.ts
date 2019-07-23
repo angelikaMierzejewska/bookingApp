@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './modules/shared/shared.module';
-import { ToolBarComponent } from './containers/tool-bar/tool-bar.component';
+import { ToolBarComponent } from './modules/tool-bar/tool-bar.component';
 import { UserModule } from './modules/user/user.module';
 import { SearchModule } from './modules/search/search.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,8 +22,8 @@ import { UserRoutingModule } from './modules/user/user-routing.module';
     SharedModule,
     UserModule,
     SearchModule,
-    HttpClientModule,
-    UserRoutingModule
+    HttpClientModule
+    // UserRoutingModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },

@@ -3,10 +3,12 @@
     <mat-toolbar-row>
       <span>My app</span>
       <div fxShow="true" fxHide.lt-md class="navbar navbar--web">
-        <button mat-button (click)="onLogin()" *ngIf="!user">Login</button>
-        <button mat-button *ngIf="user" routerLink="/profile">{{ user.login }} profile</button>
+        <button mat-button routerLink="">Search</button>
 
-        <button mat-button (click)="onLogin()" *ngIf="user">Logout</button>
+        <button mat-button (click)="onLogin()" *ngIf="!user">Login</button>
+        <button mat-button *ngIf="user" routerLink="/profile">profile</button>
+
+        <button mat-button (click)="onLogout()" *ngIf="user">Logout</button>
 
         <button mat-button [matMenuTriggerFor]="menu">PL</button>
         <mat-menu #menu="matMenu">

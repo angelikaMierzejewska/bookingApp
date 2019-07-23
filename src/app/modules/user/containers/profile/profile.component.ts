@@ -16,6 +16,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(private dialog: MatDialog, private userService: UserDataService) {}
 
   ngOnInit() {
+    this.user = this.userService.getUserFromLocalStorage();
+    console.log(this.user);
     this.userSubscription();
   }
 
@@ -26,6 +28,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userSubscription(): void {
     this.userSub = this.userService.user.subscribe(user => {
       this.user = user;
+      console.log(user);
     });
   }
 }

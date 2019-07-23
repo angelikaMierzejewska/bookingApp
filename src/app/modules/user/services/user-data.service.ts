@@ -20,15 +20,23 @@ export class UserDataService {
     );
   }
 
+  public registerUser(user) {
+    return this.httpClient.post(this.urlBase + '/api/register', user);
+  }
+
   public getUser(username): void {
     this.httpClient.get<User>(this.urlBase + '/api/users/' + username).subscribe(data => {
       localStorage.setItem('user', JSON.stringify(data));
       this.user.next(data);
-      console.log(this.isAuthenticated());
     });
   }
 
   public isAuthenticated() {
-    return this.httpClient.get(this.urlBase + '/api/authenticate');
+    return this.httpClient.get(this.urlBase + '/api/authenticate', { responseType: 'text' });
+  }
+
+  public getUserFromLocalStorage(): User {
+    const data = localStorage.getItem('user');
+    return JSON.parse(data);
   }
 }

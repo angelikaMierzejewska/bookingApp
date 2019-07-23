@@ -27,6 +27,9 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field *ngIf="registerForm">
+          <input type="imageUrl" matInput placeholder="Image url" formControlName="imageUrl" />
+        </mat-form-field>
+        <mat-form-field *ngIf="registerForm">
           <mat-icon
             *ngIf="loginForm.get('email').valid"
             matSuffix
@@ -57,11 +60,9 @@
         </mat-form-field>
 
         <mat-form-field>
-          <input type="username" matInput placeholder="User name" formControlName="username" />
+          <input type="login" matInput placeholder="User name" formControlName="login" />
           <mat-error
-            *ngIf="
-              loginForm.get('username').hasError('required') && loginForm.get('username').touched
-            "
+            *ngIf="loginForm.get('login').hasError('required') && loginForm.get('login').touched"
           >
             This field is required
           </mat-error>

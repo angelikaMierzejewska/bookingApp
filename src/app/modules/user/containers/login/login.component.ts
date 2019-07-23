@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
     firstName: [''],
     lastName: [''],
     email: ['', [Validators.email]],
-    username: ['', [Validators.required, Validators.maxLength(16)]],
+    login: ['', [Validators.required, Validators.maxLength(16)]],
     password: [
       '',
       [
@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
         // Validators.pattern('(.*[A-Z].*)')
       ]
     ],
+    imageUrl: [''],
     rememberMe: false
   });
   private isLoading = false;
@@ -42,21 +43,31 @@ export class LoginComponent implements OnInit {
   public submit(): void {
     if (this.loginForm.dirty && this.loginForm.valid) {
       this.isLoading = true;
+      if (this.registerForm) {
+        this.userDataService.registerUser(this.loginForm.value).subscribe(data => {
+          console.log(data);
+        });
+      } else {
+        console.log('login');
+        const login = {
+          username: this.loginForm.value.login,
+          password: this.loginForm.value.password,
+          rememberMe: this.loginForm.value.rememberMe
+        };
 
-      this.userDataService.loginUser(this.loginForm.value).subscribe(
-        data => {
-          this.isLoading = false;
-          console.log('POST Request is successful ', data);
-          localStorage.setItem('token', data.id_token);
-          const decoded = jwt_decode(data.id_token);
-          console.log(decoded);
-          this.getUser(this.loginForm.value.username);
-          this.dialogRef.close();
-        },
-        error => {
-          console.log('Error', error);
-        }
-      );
+        this.userDataService.loginUser(login).subscribe(
+          data => {
+            console.log(data);
+            this.isLoading = false;
+            localStorage.setItem('token', data.id_token);
+            this.getUser(this.loginForm.value.login);
+            this.dialogRef.close();
+          },
+          error => {
+            console.log('Error', error);
+          }
+        );
+      }
     }
   }
 
