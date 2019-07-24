@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SearchComponent } from './modules/search/containers/search/search.component';
 import { ProfileComponent } from './modules/user/containers/profile/profile.component';
 import { AuthGuard } from './modules/user/guard/auth.guard';
+import { HotelComponent } from './modules/search/containers/hotel/hotel.component';
 
 const routes: Routes = [
   { path: '', component: SearchComponent },
@@ -10,7 +11,8 @@ const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     canActivate: [AuthGuard]
-  }
+  },
+  { path: 'hotel/:id', component: HotelComponent }
 ];
 
 @NgModule({

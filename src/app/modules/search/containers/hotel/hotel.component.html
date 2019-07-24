@@ -1,0 +1,5 @@
+<div *ngIf="hotel">
+  <h1>{{ hotel.name }}</h1>
+  <p>{{ hotel.location }}</p>
+  <app-facalities [hotelId]="hotel.id"></app-facalities>
+</div>

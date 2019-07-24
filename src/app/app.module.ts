@@ -12,6 +12,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpRequestInterceptor } from './modules/shared/interceptors/http-request.interceptor';
 import { ErrorInterceptor } from './modules/shared/interceptors/error.interceptor';
 import { UserRoutingModule } from './modules/user/user-routing.module';
+import { Store } from '../store';
 
 @NgModule({
   declarations: [AppComponent, ToolBarComponent],
@@ -26,6 +27,7 @@ import { UserRoutingModule } from './modules/user/user-routing.module';
     // UserRoutingModule
   ],
   providers: [
+    Store,
     { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],

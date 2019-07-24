@@ -3,22 +3,22 @@
   <mat-form-field class="example-full-width">
     <input
       type="text"
-      placeholder="Assignee"
+      placeholder="Location"
       aria-label="Assignee"
       matInput
-      [formControl]="myControl"
+      [formControl]="locationControl"
       [matAutocomplete]="auto"
     />
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
       <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-        {{ option.name }}
+        {{ option }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
 </form>
 
-<div class="card__box">
-  <mat-card class="card" *ngFor="let hotel of hotels">
+<div class="card__box" *ngIf="filterHotels">
+  <mat-card class="card" *ngFor="let hotel of filterHotels">
     <mat-card-header>
       <mat-card-title>{{ hotel.name }}</mat-card-title>
       <mat-card-subtitle>{{ hotel.location }}</mat-card-subtitle>
@@ -29,15 +29,14 @@
       alt="Photo of a Shiba Inu"
     />
     <mat-card-content>
-      <p></p>
+      <app-facalities [hotelId]="hotel.id"></app-facalities>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button>LIKE</button>
+      <button mat-button (click)="showHotel(hotel.id)">SHOW</button>
       <button mat-button>BOOK</button>
     </mat-card-actions>
   </mat-card>
 </div>
-
-<mat-card class="card" *ngFor="let location of locations">
-  <p>{{ location }}</p>
-</mat-card>
+<div *ngFor="let hotel of hotelsObs$ | async">
+  <p>{{ hotel.name }}</p>
+</div>
