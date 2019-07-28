@@ -1,35 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { HotelService } from '../../services/hotel.service';
-import { Hotel } from '../../resources/models/hotel.model';
-import { from, Observable, of } from 'rxjs';
-import { distinct, filter, map, startWith, tap, toArray } from 'rxjs/operators';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { from, Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { distinct, filter, map, startWith, tap, toArray } from 'rxjs/operators';
+import { Hotel } from '../../resources/models/hotel.model';
+import { HotelService } from '../../services/hotel.service';
 import { Router } from '@angular/router';
 import { Store } from '../../../../../store';
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  selector: 'app-search-form',
+  templateUrl: './search-form.component.html',
+  styleUrls: ['./search-form.component.scss']
 })
-export class SearchComponent implements OnInit {
-  private hotels: Hotel[];
+export class SearchFormComponent implements OnInit {
+  @Input() hotels: Hotel[];
+  //
+  // @Output() search = new EventEmitter<string>();
+
+  //private hotels: Hotel[];
   private filterHotels: Hotel[];
   private locations: string[] = [];
   private locationControl = new FormControl();
   private filteredOptions: Observable<string[]>;
 
-  private hotelsObs$: Observable<Hotel[]>;
-
   constructor(private hotelService: HotelService, private router: Router, private store: Store) {}
 
   ngOnInit() {
     this.getAllHotels();
+
     this.filteredLocations();
-
-    this.hotelService.getAllHotels().subscribe();
-
-    this.hotelsObs$ = this.store.select<Hotel[]>('hotels');
   }
 
   public getAllHotels(): void {
@@ -86,8 +85,5 @@ export class SearchComponent implements OnInit {
     return this.locations.filter(
       (option: string) => option.toLowerCase().indexOf(filterValue) === 0
     );
-  }
-  public showHotel(id: number): void {
-    this.router.navigate([`/hotel/${id}`]);
   }
 }

@@ -3,9 +3,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserDataService } from '../../services/user-data.service';
 import { MatDialogRef } from '@angular/material';
-import { Subject } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import { User } from '../../resources/models/User';
 import * as jwt_decode from 'jwt-decode';
+import {Store} from "../../../../../store";
 
 @Component({
   selector: 'app-login',
@@ -31,22 +32,25 @@ export class LoginComponent implements OnInit {
   });
   private isLoading = false;
   private registerForm = false;
-
+  private token$: Observable<string>;
+  private user$: Observable<User>;
   constructor(
     private formBuilder: FormBuilder,
     private userDataService: UserDataService,
-    private dialogRef: MatDialogRef<LoginComponent>
+    private dialogRef: MatDialogRef<LoginComponent>,
+    private store: Store
   ) {}
 
-  public ngOnInit(): void {}
+  public ngOnInit(): void {
+    this.token$ = this.store.select<string>('token');
+    this.user$ = this.store.select<User>('user');
+  }
 
   public submit(): void {
     if (this.loginForm.dirty && this.loginForm.valid) {
       this.isLoading = true;
       if (this.registerForm) {
-        this.userDataService.registerUser(this.loginForm.value).subscribe(data => {
-          console.log(data);
-        });
+        this.userDataService.registerUser(this.loginForm.value).subscribe();
       } else {
         console.log('login');
         const login = {
@@ -57,10 +61,7 @@ export class LoginComponent implements OnInit {
 
         this.userDataService.loginUser(login).subscribe(
           data => {
-            console.log(data);
-            this.isLoading = false;
             localStorage.setItem('token', data.id_token);
-            this.getUser(this.loginForm.value.login);
             this.dialogRef.close();
           },
           error => {
@@ -71,9 +72,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  public getUser(username: string) {
-    this.userDataService.getUser(username);
-  }
+
+
 
   toggleForm(): void {
     this.registerForm = !this.registerForm;

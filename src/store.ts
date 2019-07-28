@@ -1,17 +1,23 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, pluck } from 'rxjs/operators';
 import { Hotel } from './app/modules/search/resources/models/hotel.model';
+import {User} from "./app/modules/user/resources/models/User";
+import {Room} from "./app/modules/search/resources/models/room.model";
 
 interface InitialState {
   isLogedin: boolean;
   hotels: Hotel[];
-  animals: any[];
+  user: User;
+  token: string;
+  rooms: Room[];
 }
 
 const initialState: InitialState = {
   isLogedin: false,
   hotels: [],
-  animals: []
+  user: null,
+  token: '',
+  rooms: []
 };
 
 export class Store {
@@ -28,5 +34,7 @@ export class Store {
 
   set(name: string, newStateVal: any) {
     this.subject.next({ ...this.subject.value, [name]: newStateVal });
+    console.log(this.subject.value);
+
   }
 }

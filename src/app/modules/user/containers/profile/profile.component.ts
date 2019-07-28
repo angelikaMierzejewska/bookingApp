@@ -1,34 +1,20 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import {Observable, } from 'rxjs';
 import { User } from '../../resources/models/User';
-import { MatDialog } from '@angular/material';
-import { UserDataService } from '../../services/user-data.service';
+
+import {Store} from "../../../../../store";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
-  private userSub: Subscription;
-  private user: User;
+export class ProfileComponent implements OnInit {
+  private user$: Observable<User>;
 
-  constructor(private dialog: MatDialog, private userService: UserDataService) {}
+  constructor(private store: Store) {}
 
   ngOnInit() {
-    this.user = this.userService.getUserFromLocalStorage();
-    console.log(this.user);
-    this.userSubscription();
-  }
-
-  ngOnDestroy(): void {
-    this.userSub.unsubscribe();
-  }
-
-  public userSubscription(): void {
-    this.userSub = this.userService.user.subscribe(user => {
-      this.user = user;
-      console.log(user);
-    });
+    this.user$ = this.store.select<User>('user');
   }
 }
