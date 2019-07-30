@@ -6,10 +6,31 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FacalitiesComponent } from './containers/facalities/facalities.component';
 import { HotelComponent } from './containers/hotel/hotel.component';
 import { RoomsComponent } from './containers/rooms/rooms.component';
+import { MatNativeDateModule } from '@angular/material';
+import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
+import { BookingComponent } from './containers/booking/booking.component';
+import { SearchResultComponent } from './components/search-result/search-result.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [SearchComponent, FacalitiesComponent, HotelComponent, RoomsComponent],
-  imports: [CommonModule, SharedModule, FormsModule, ReactiveFormsModule],
+  declarations: [
+    SearchComponent,
+    FacalitiesComponent,
+    HotelComponent,
+    RoomsComponent,
+    BookingComponent,
+    SearchResultComponent
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatNativeDateModule,
+    SatNativeDateModule,
+    SatDatepickerModule,
+    RouterModule
+  ],
   exports: [SearchComponent]
 })
 export class SearchModule {}

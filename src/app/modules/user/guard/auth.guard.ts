@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { UserDataService } from '../services/user-data.service';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { CanActivate } from '@angular/router';
+import { switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(public userService: UserDataService, public router: Router) {}
+  constructor(public authSevice: AuthService) {}
 
   public canActivate() {
-    return this.userService.isAuthenticated().pipe(
+    return this.authSevice.isAuthenticated().pipe(
       tap(res => console.log(res)),
       switchMap((res: string) => of(!!res.length))
     );

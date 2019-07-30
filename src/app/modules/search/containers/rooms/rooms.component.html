@@ -1,1 +1,6 @@
-<p>rooms works!</p>
+<div *ngFor="let room of rooms$ | async">
+  <p>
+    Room number: {{ room.number }}, capacity {{ room.capacity }}
+    <a mat-raised-button color="primary" (click)="onBooking(room.id)">Book</a>
+  </p>
+</div>

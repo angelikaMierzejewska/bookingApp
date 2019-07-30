@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable, } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from '../../resources/models/User';
-
-import {Store} from "../../../../../store";
+import { Store } from '../../../../../store';
 
 @Component({
   selector: 'app-profile',

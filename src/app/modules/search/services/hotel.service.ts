@@ -19,12 +19,6 @@ export class HotelService {
       .pipe(tap(response => this.store.set('hotels', response)));
   }
 
-  getFacalities(): Observable<any> {
-    return this.httpClient
-      .get(this.urlBase + '/api/facalities')
-      .pipe(tap(response => this.store.set('facalities', response)));
-  }
-
   getHotel(id: number) {
     return this.httpClient.get(this.urlBase + '/api/hotels/' + id);
   }

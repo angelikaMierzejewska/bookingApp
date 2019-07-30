@@ -3,21 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Store } from '../../../../store';
-import { Room } from '../resources/models/room.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RoomService {
+export class FacalitiesServices {
   private urlBase = 'http://185.157.80.88:8080';
 
   constructor(private httpClient: HttpClient, private store: Store) {}
 
-  public getAllRooms(): Observable<Room[]> {
-    return this.httpClient.get<Room[]>(this.urlBase + '/api/rooms').pipe(
-      tap(response => {
-        this.store.set('rooms', response);
-      })
-    );
+  getFacalities(): Observable<any> {
+    return this.httpClient
+      .get(this.urlBase + '/api/facalities')
+      .pipe(tap(response => this.store.set('facalities', response)));
   }
 }

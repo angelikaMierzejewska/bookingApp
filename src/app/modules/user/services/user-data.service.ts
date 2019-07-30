@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../resources/models/User';
-import {Store} from "../../../../store";
+import { Store } from '../../../../store';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -24,21 +24,19 @@ export class UserDataService {
       );
   }
 
-  public registerUser(user) {
+  public registerUser(user): Observable<any> {
     return this.httpClient.post(this.urlBase + '/api/register', user);
   }
 
   public getUser(username): Observable<User> {
     return this.httpClient.get<User>(this.urlBase + '/api/users/' + username).pipe(
-      tap(response => {
+      tap((response: User) => {
         this.store.set('user', response);
+        localStorage.setItem('user', JSON.stringify(response));
       })
     );
   }
 
-  public isAuthenticated() {
-    return this.httpClient.get(this.urlBase + '/api/authenticate', { responseType: 'text' });
-  }
   public getUserFromLocalStorage(): User {
     const data = localStorage.getItem('user');
     return JSON.parse(data);

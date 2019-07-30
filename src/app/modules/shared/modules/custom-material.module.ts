@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
   MatButtonModule,
   MatCardModule,
@@ -16,7 +15,8 @@ import {
   MatIconModule,
   MatBadgeModule,
   MatCheckboxModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatDatepickerModule
 } from '@angular/material';
 @NgModule({
   declarations: [],
@@ -39,7 +39,8 @@ import {
     MatSnackBarModule,
     MatBadgeModule,
     MatCheckboxModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatDatepickerModule
   ]
 })
 export class CustomMaterialModule {}

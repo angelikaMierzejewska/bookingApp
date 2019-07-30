@@ -3,6 +3,7 @@ import { HotelService } from '../../services/hotel.service';
 import { from } from 'rxjs';
 import { filter, map, toArray } from 'rxjs/operators';
 import { Facalitie } from '../../resources/models/facalitie.model';
+import { FacalitiesServices } from '../../services/facalities.services';
 
 @Component({
   selector: 'app-facalities',
@@ -15,14 +16,14 @@ export class FacalitiesComponent implements OnInit {
 
   @Input() hotelId: number;
 
-  constructor(private hotelService: HotelService) {}
+  constructor(private hotelService: HotelService, private facalities: FacalitiesServices) {}
 
   ngOnInit(): void {
     this.getAllFacalities();
   }
 
   public getAllFacalities(): void {
-    this.hotelService.getFacalities().subscribe((data: Facalitie[]) => {
+    this.facalities.getFacalities().subscribe((data: Facalitie[]) => {
       this.allFacalities = data;
       this.getHotelFacalities(this.hotelId);
     });

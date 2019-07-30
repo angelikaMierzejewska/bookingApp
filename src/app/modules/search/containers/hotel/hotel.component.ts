@@ -21,7 +21,6 @@ export class HotelComponent implements OnInit {
 
     this.hotelService.getHotel(id).subscribe((data: Hotel) => {
       this.hotel = data;
-      console.log(data);
     });
   }
 }

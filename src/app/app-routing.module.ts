@@ -4,6 +4,7 @@ import { SearchComponent } from './modules/search/containers/search/search.compo
 import { ProfileComponent } from './modules/user/containers/profile/profile.component';
 import { AuthGuard } from './modules/user/guard/auth.guard';
 import { HotelComponent } from './modules/search/containers/hotel/hotel.component';
+import { BookingComponent } from './modules/search/containers/booking/booking.component';
 
 const routes: Routes = [
   { path: '', component: SearchComponent },
@@ -12,7 +13,8 @@ const routes: Routes = [
     component: ProfileComponent,
     canActivate: [AuthGuard]
   },
-  { path: 'hotel/:id', component: HotelComponent }
+  { path: 'hotel/:id', component: HotelComponent },
+  { path: 'booking/:roomId', component: BookingComponent }
 ];
 
 @NgModule({

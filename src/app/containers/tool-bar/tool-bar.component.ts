@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { LoginComponent } from '../user/containers/login/login.component';
-import { Observable, Subscription } from 'rxjs';
-import { UserDataService } from '../user/services/user-data.service';
-import { User } from '../user/resources/models/User';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from '../../../store';
+import { User } from '../../modules/user/resources/models/User';
+import { LoginComponent } from '../../modules/user/containers/login/login.component';
+import { UserDataService } from '../../modules/user/services/user-data.service';
 
 @Component({
   selector: 'app-tool-bar',
@@ -25,7 +25,6 @@ export class ToolBarComponent implements OnInit {
     this.user$ = this.store.select<User>('token');
   }
 
-
   onLogin(): void {
     this.dialog.open(LoginComponent, {
       minWidth: 350
@@ -35,5 +34,7 @@ export class ToolBarComponent implements OnInit {
   onLogout(): void {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    this.store.set('token', '');
+    this.store.set('user', null);
   }
 }
