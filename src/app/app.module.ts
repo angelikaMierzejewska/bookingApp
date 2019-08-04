@@ -9,7 +9,6 @@ import { SearchModule } from './modules/search/search.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpRequestInterceptor } from './modules/shared/interceptors/http-request.interceptor';
-import { ErrorInterceptor } from './modules/shared/interceptors/error.interceptor';
 import { Store } from '../store';
 
 @NgModule({
@@ -25,9 +24,9 @@ import { Store } from '../store';
   ],
   providers: [
     Store,
-    { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule {}

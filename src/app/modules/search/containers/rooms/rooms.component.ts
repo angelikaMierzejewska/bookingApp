@@ -6,6 +6,8 @@ import { Store } from '../../../../../store';
 import { map } from 'rxjs/operators';
 import { BookingService } from '../../services/booking.service';
 import { MatSnackBar } from '@angular/material';
+import { HotelService } from '../../services/hotel.service';
+import { Hotel } from '../../resources/models/hotel.model';
 
 @Component({
   selector: 'app-rooms',
@@ -13,23 +15,23 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./rooms.component.scss']
 })
 export class RoomsComponent implements OnInit {
-  private rooms$: Observable<Room[]>;
-
+  private rooms: Room[];
+  private hotels: Hotel[];
   @Input() hotelId: number;
 
   constructor(
     private roomService: RoomService,
     private store: Store,
     private bookingService: BookingService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private hotelService: HotelService
   ) {}
 
   ngOnInit() {
     this.roomService.getAllRooms().subscribe();
-
-    this.rooms$ = this.store
-      .select<Room[]>('rooms')
-      .pipe(map((rooms: Room[]) => rooms.filter((room: Room) => room.hotel.id === this.hotelId)));
+    this.hotels = this.store.value.hotels;
+    const hotel = this.hotels.find(hotel => hotel.id === this.hotelId);
+    this.rooms = hotel.rooms;
   }
 
   onBooking(id: number) {

@@ -11,6 +11,7 @@ import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
 import { BookingComponent } from './containers/booking/booking.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
 import { RouterModule } from '@angular/router';
+import { AvailableRoomsComponent } from './components/available-rooms/available-rooms.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { RouterModule } from '@angular/router';
     HotelComponent,
     RoomsComponent,
     BookingComponent,
-    SearchResultComponent
+    SearchResultComponent,
+    AvailableRoomsComponent
   ],
   imports: [
     CommonModule,

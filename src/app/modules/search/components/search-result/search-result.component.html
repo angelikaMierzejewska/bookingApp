@@ -11,6 +11,7 @@
     />
     <mat-card-content>
       <app-facalities [hotelId]="hotel.id"></app-facalities>
+      <p>{{ hotel.rooms.length }}</p>
     </mat-card-content>
     <mat-card-actions>
       <button mat-button [routerLink]="'/hotel/' + hotel.id">SHOW</button>

@@ -44,9 +44,15 @@
     />
     <mat-card-content>
       <app-facalities [hotelId]="hotel.id"></app-facalities>
+
+      <!--      <app-available-rooms [rooms]="hotel.rooms"></app-available-rooms>-->
+      <app-rooms [hotelId]="hotel.id"></app-rooms>
     </mat-card-content>
     <mat-card-actions>
       <button mat-button (click)="showHotel(hotel.id)">SHOW</button>
     </mat-card-actions>
   </mat-card>
 </div>
+
+<div *ngFor="let hotel of hotels$ | async">{{ hotel.name }}</div>
+<div *ngFor="let hotel of booking$ | async">{{ hotel.startDate }}</div>

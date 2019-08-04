@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { HotelService } from '../../services/hotel.service';
 import { Hotel } from '../../resources/models/hotel.model';
-import { from, Observable, of } from 'rxjs';
-import { distinct, filter, map, startWith, tap, toArray } from 'rxjs/operators';
+import { from, Observable, combineLatest } from 'rxjs';
+import { distinct, map, startWith, take, tap, toArray, filter } from 'rxjs/operators';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '../../../../../store';
 import { SatDatepickerInputEvent, SatDatepickerRangeValue } from 'saturn-datepicker';
 import { BookingService } from '../../services/booking.service';
 import { Booking } from '../../resources/models/booking.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-search',
@@ -21,9 +22,10 @@ export class SearchComponent implements OnInit {
   private locations: string[] = [];
   private locationControl = new FormControl();
   private filteredOptions: Observable<string[]>;
-  private hotelsObs$: Observable<Hotel[]>;
-  private allBooking: Booking[];
   private minDate = new Date();
+
+  private hotels$: Observable<Hotel[]>;
+  private booking$: Observable<Booking[]>;
 
   private searchForm = this.formBuilder.group({
     locationControl: new FormControl(),
@@ -45,20 +47,46 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this.store.set('bookingDate', this.date);
-    this.hotelService.getAllHotels().subscribe();
-    this.bookingService.getAllBooking().subscribe(data => {
-      this.allBooking = data;
-      this.filterBookedRooms();
-    });
     this.getAllHotels();
     this.filteredLocations();
-
-    this.hotelsObs$ = this.store.select<Hotel[]>('hotels');
+    this.bookingService.getAllBooking().subscribe();
+    this.filterBookedRooms();
   }
 
-  onDateChange = (e: SatDatepickerInputEvent<Date>) => this.store.set('bookingDate', e.value);
+  onDateChange = (e: SatDatepickerInputEvent<Date>) => {
+    this.store.set('bookingDate', e.value);
+    this.filterBookedRooms();
+  };
 
-  filterBookedRooms(): void {}
+  filterBookedRooms(): void {
+    this.hotels$ = this.store.select<Hotel[]>('hotels');
+    this.booking$ = this.store.select<Booking[]>('booking');
+    const start = moment(this.date.begin).format('YYYY-MM-DD');
+    const end = moment(this.date.begin).format('YYYY-MM-DD');
+
+    combineLatest(this.booking$, this.hotels$)
+      .pipe(take(1))
+      .subscribe(([bookings, hotels]) => {
+        const bookedRooms = bookings.filter(
+          booking =>
+            (moment(booking.startDate).format('YYYY-MM-DD') <= start &&
+              moment(booking.endDate).format('YYYY-MM-DD') >= start) ||
+            (moment(booking.startDate).format('YYYY-MM-DD') >= start &&
+              moment(booking.endDate).format('YYYY-MM-DD') <= end) ||
+            (moment(booking.startDate).format('YYYY-MM-DD') <= end &&
+              moment(booking.endDate).format('YYYY-MM-DD') <= end)
+        );
+        bookedRooms.map(booking =>
+          booking.rooms.map(r => {
+            const hotelId = r.hotel.id;
+            const hotel = hotels.find(h => h.id === hotelId);
+            const room = hotel.rooms.find(x => x.id === r.id);
+            room.booked = true;
+          })
+        );
+        this.store.set('hotels', hotels);
+      });
+  }
 
   public getAllHotels(): void {
     this.hotelService.getAllHotels().subscribe(data => {

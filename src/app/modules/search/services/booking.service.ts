@@ -19,18 +19,27 @@ export class BookingService {
 
   public getAllBooking(): Observable<Booking[]> {
     return this.httpClient.get<Booking[]>(this.urlBase + '/api/bookings').pipe(
-      map(data =>
-        data.map(booking =>
-          new Booking().deserialize({
-            endDate: booking.endDate,
-            rooms: booking.rooms.map(room => room.id),
-            startDate: booking.startDate
-          })
-        )
-      ),
       tap(response => {
         this.store.set('booking', response);
+        console.log(this.store);
       })
     );
   }
+
+  // public getAllBooking(): Observable<Booking[]> {
+  //   return this.httpClient.get<Booking[]>(this.urlBase + '/api/bookings').pipe(
+  //     map(data =>
+  //       data.map(booking =>
+  //         new Booking().deserialize({
+  //           endDate: booking.endDate,
+  //           rooms: booking.rooms.map(room => room.id),
+  //           startDate: booking.startDate
+  //         })
+  //       )
+  //     ),
+  //     tap(response => {
+  //       this.store.set('booking', response);
+  //     })
+  //   );
+  // }
 }
