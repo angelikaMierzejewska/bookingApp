@@ -1,0 +1,58 @@
+<form [formGroup]="searchForm" class="example-form">
+  <mat-form-field class="example-full-width">
+    <input
+      type="text"
+      placeholder="Location"
+      aria-label="Assignee"
+      matInput
+      formControlName="locationControl"
+      [matAutocomplete]="auto"
+      (change)="filteredLocations()"
+    />
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="Choose a date"
+      formControlName="date"
+      [min]="minDate"
+      [satDatepicker]="resultPicker"
+      [(ngModel)]="date"
+      (dateChange)="onDateChange($event)"
+    />
+    <sat-datepicker panelClass="hdd-datepicker" #resultPicker [rangeMode]="true"> </sat-datepicker>
+    <sat-datepicker-toggle matSuffix [for]="resultPicker"></sat-datepicker-toggle>
+  </mat-form-field>
+</form>
+
+<div class="card__box" *ngIf="filterHotels">
+  <mat-card class="card" *ngFor="let hotel of filterHotels">
+    <mat-card-header>
+      <mat-card-title>{{ hotel.name }}</mat-card-title>
+      <mat-card-subtitle>{{ hotel.location }}</mat-card-subtitle>
+    </mat-card-header>
+    <img
+      mat-card-image
+      src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+      alt="Photo of a Shiba Inu"
+    />
+    <mat-card-content>
+      <app-facalities [hotelId]="hotel.id"></app-facalities>
+
+      <!--      <app-available-rooms [rooms]="hotel.rooms"></app-available-rooms>-->
+      <app-rooms [hotelId]="hotel.id"></app-rooms>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="showHotel(hotel.id)">SHOW</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<div *ngFor="let hotel of hotels$ | async">{{ hotel.name }}</div>
+<div *ngFor="let hotel of booking$ | async">{{ hotel.startDate }}</div>

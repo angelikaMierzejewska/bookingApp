@@ -1,0 +1,8 @@
+<div *ngFor="let room of rooms">
+  <p>
+    Room number: {{ room.number }}, capacity {{ room.capacity }}
+
+    <a mat-raised-button color="primary" *ngIf="!room.booked" (click)="onBooking(room.id)">Book</a>
+    <span *ngIf="room.booked"> Booked!</span>
+  </p>
+</div>

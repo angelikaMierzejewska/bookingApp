@@ -1,0 +1,21 @@
+.card {
+  width: 400px;
+  margin: 10px;
+  flex: 1 0 21%; /* explanation below */
+  margin: 5px;
+}
+
+.card__box {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
