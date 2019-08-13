@@ -6,7 +6,7 @@ import { FacalitiesComponent } from '../../containers/facalities/facalities.comp
 import { HotelComponent } from '../../containers/hotel/hotel.component';
 import { RoomsComponent } from '../../containers/rooms/rooms.component';
 import { SearchResultComponent } from '../search-result/search-result.component';
-import { CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material';
@@ -36,7 +36,8 @@ describe('AvailableRoomsComponent', () => {
         SatNativeDateModule,
         SatDatepickerModule,
         RouterModule.forRoot([])
-      ]
+      ],
+      providers: [{ provide: APP_BASE_HREF, useValue: '/' }]
     }).compileComponents();
   }));
 

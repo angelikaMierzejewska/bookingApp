@@ -11,6 +11,7 @@ import { SearchModule } from '../../modules/search/search.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Store } from '../../../store';
 import { HttpRequestInterceptor } from '../../modules/shared/interceptors/http-request.interceptor';
+import { APP_BASE_HREF } from '@angular/common';
 
 describe('ToolBarComponent', () => {
   let component: ToolBarComponent;
@@ -28,18 +29,23 @@ describe('ToolBarComponent', () => {
         SearchModule,
         HttpClientModule
       ],
+
       providers: [
         Store,
-        { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }
+        { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
+        { provide: APP_BASE_HREF, useValue: '/' }
       ]
     }).compileComponents();
-  }));
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ToolBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
+
+  // beforeEach(() => {
+  //   fixture = TestBed.createComponent(ToolBarComponent);
+  //   component = fixture.componentInstance;
+  //   fixture.detectChanges();
+  // });
 
   it('should create', () => {
     expect(component).toBeTruthy();

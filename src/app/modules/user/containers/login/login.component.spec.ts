@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
-import { CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from '../../../shared/modules/custom-material.module';
@@ -34,18 +34,25 @@ describe('LoginComponent', () => {
         HttpClient,
         HttpHandler,
         Store,
-        { provide: MatDialogRef, useValue: {} }
+        { provide: MatDialogRef, useValue: {} },
+        { provide: APP_BASE_HREF, useValue: '/' }
       ]
     }).compileComponents();
-  }));
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
     mockUserService = jasmine.createSpyObj('UserService', ['loginUser', 'registerUser', 'getUser']);
-  });
+  }));
+
+  // beforeEach(() => {
+  //   fixture = TestBed.createComponent(LoginComponent);
+  //   component = fixture.componentInstance;
+  //   fixture.detectChanges();
+  //
+  //   mockUserService = jasmine.createSpyObj('UserService', ['loginUser', 'registerUser', 'getUser']);
+  //
+  // });
 
   it('should create', () => {
     expect(component).toBeTruthy();

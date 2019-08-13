@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileComponent } from './profile.component';
-import { CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from '../../../shared/modules/custom-material.module';
@@ -23,15 +23,18 @@ describe('ProfileComponent', () => {
         CustomMaterialModule,
         RouterModule.forRoot([])
       ],
-      providers: [Store]
+      providers: [Store, { provide: APP_BASE_HREF, useValue: '/' }]
     }).compileComponents();
-  }));
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
+
+  // beforeEach(() => {
+  //   fixture = TestBed.createComponent(ProfileComponent);
+  //   component = fixture.componentInstance;
+  //   fixture.detectChanges();
+  // });
 
   it('should create', () => {
     expect(component).toBeTruthy();

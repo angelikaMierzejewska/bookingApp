@@ -13,6 +13,11 @@ import { SearchResultComponent } from './components/search-result/search-result.
 import { RouterModule } from '@angular/router';
 import { AvailableRoomsComponent } from './components/available-rooms/available-rooms.component';
 import { CustomMaterialModule } from '../shared/modules/custom-material.module';
+import { SearchFacade } from './+state/search.facade';
+import { HOTEL_FEATURE_KEY, searchReducer, initialState } from './+state/search.reducer';
+import { StoreModule } from '@ngrx/store';
+import { SearchEffects } from './+state/search.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -31,8 +36,11 @@ import { CustomMaterialModule } from '../shared/modules/custom-material.module';
     MatNativeDateModule,
     SatNativeDateModule,
     SatDatepickerModule,
-    RouterModule
+    RouterModule,
+    StoreModule.forFeature(HOTEL_FEATURE_KEY, searchReducer, { initialState }),
+    EffectsModule.forFeature([SearchEffects])
   ],
+  providers: [SearchFacade],
   exports: [SearchComponent]
 })
 export class SearchModule {}

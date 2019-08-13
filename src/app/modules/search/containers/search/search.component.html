@@ -1,3 +1,6 @@
+<div *ngIf="hotelsLoading$ | async">items are loading ...</div>
+<div *ngIf="hotelsLoadError$ | async">Error ...</div>
+
 <form [formGroup]="searchForm" class="search__form">
   <mat-form-field class="search__full-width">
     <input
@@ -30,4 +33,7 @@
 </form>
 <app-search-result [filterHotels]="filterHotels$ | async"></app-search-result>
 
-<!--<div *ngFor="let hotel of hotels$ | async">{{ hotel.name }} {{ hotel.rooms[0].booked }}</div>-->
+<div *ngFor="let item of booking$ | async">
+  {{ item.endDate }}
+  {{ item.startDate }}
+</div>

@@ -10,6 +10,7 @@ import { BookingService } from '../../services/booking.service';
 import { Booking } from '../../resources/models/booking.model';
 import * as moment from 'moment';
 import { Room } from '../../resources/models/room.model';
+import { SearchFacade } from '../../+state/search.facade';
 
 @Component({
   selector: 'app-search',
@@ -17,9 +18,14 @@ import { Room } from '../../resources/models/room.model';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  private filterHotels$: Observable<Hotel[]>;
+  private filterHotels$: Observable<Hotel[]> = this.searchFasde.hotels$;
   private filteredOptions$: Observable<string[]>;
-  hotels$: Observable<Hotel[]>;
+  hotels$: Observable<Hotel[]> = this.searchFasde.hotels$;
+  hotelsLoadError$ = this.searchFasde.hotelsLoadError$;
+  hotelsLoading$ = this.searchFasde.hotelsLoading$;
+
+  booking2$ = this.searchFasde.bookings$;
+
   booking$: Observable<Booking[]>;
 
   locations: string[] = [];
@@ -40,10 +46,14 @@ export class SearchComponent implements OnInit {
     private router: Router,
     private store: Store,
     private formBuilder: FormBuilder,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private searchFasde: SearchFacade
   ) {}
 
   ngOnInit() {
+    this.searchFasde.getBookings();
+
+    this.searchFasde.getHotels();
     this.store.set('bookingDate', this.searchForm.value.date);
 
     this.hotels$ = this.store.select<Hotel[]>('hotels');

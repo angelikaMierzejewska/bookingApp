@@ -1,15 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BookingDetailComponent } from './booking-detail.component';
-import { CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from '../../../shared/modules/custom-material.module';
 import { UserDataService } from '../../services/user-data.service';
 import { RouterModule } from '@angular/router';
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Store } from '../../../../../store';
-import { AppComponent } from '../../../../app.component';
 import { AppModule } from '../../../../app.module';
 
 describe('BookingDetailComponent', () => {
@@ -18,7 +17,7 @@ describe('BookingDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BookingDetailComponent],
+      declarations: [],
       imports: [
         AppModule,
         CommonModule,
@@ -28,17 +27,20 @@ describe('BookingDetailComponent', () => {
         CustomMaterialModule,
         RouterModule.forRoot([])
       ],
-      providers: [UserDataService, HttpClient, Store]
+      providers: [UserDataService, HttpClient, Store, { provide: APP_BASE_HREF, useValue: '/' }]
     }).compileComponents();
-  }));
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(BookingDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
+  // beforeEach(() => {
+  //   fixture = TestBed.createComponent(BookingDetailComponent);
+  //   component = fixture.componentInstance;
+  //   fixture.detectChanges();
   // });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

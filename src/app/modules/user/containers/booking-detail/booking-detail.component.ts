@@ -9,7 +9,7 @@ import { Booking } from '../../../search/resources/models/booking.model';
   styleUrls: ['./booking-detail.component.scss']
 })
 export class BookingDetailComponent implements OnInit {
-  booking: Booking;
+  booking: Booking | null;
   constructor(private route: ActivatedRoute, private bookingService: BookingService) {}
 
   ngOnInit() {

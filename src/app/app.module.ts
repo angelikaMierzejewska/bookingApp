@@ -10,6 +10,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpRequestInterceptor } from './modules/shared/interceptors/http-request.interceptor';
 import { Store } from '../store';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [AppComponent, ToolBarComponent],
@@ -20,7 +22,14 @@ import { Store } from '../store';
     SharedModule,
     UserModule,
     SearchModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot(
+      {},
+      {
+        runtimeChecks: { strictStateImmutability: true, strictActionImmutability: true }
+      }
+    ),
+    EffectsModule.forRoot([])
   ],
   providers: [Store, { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }],
 
