@@ -1,8 +1,9 @@
 import { Deserializable } from '../interfaces/deserializable.interface';
+import { Room } from './room.model';
 
 export class Booking implements Deserializable {
   endDate: Date;
-  rooms: string[];
+  rooms: Room[];
   startDate: Date;
 
   deserialize(input: any): this {

@@ -8,12 +8,16 @@ import { Room } from '../../resources/models/room.model';
   styleUrls: ['./available-rooms.component.scss']
 })
 export class AvailableRoomsComponent implements OnInit {
-  @Input() rooms: Room[];
+  @Input() rooms: Room[] = [];
   private availableRooms = false;
 
   constructor() {}
 
   ngOnInit() {
+    this.checkAvailableRooms();
+  }
+
+  checkAvailableRooms() {
     const availableRoom = this.rooms.find(room => room.booked === false);
     if (availableRoom) {
       this.availableRooms = true;

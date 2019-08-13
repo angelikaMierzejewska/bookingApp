@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Store } from '../../../../store';
+import { Facilities } from '../resources/models/facilities.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ export class FacalitiesServices {
 
   constructor(private httpClient: HttpClient, private store: Store) {}
 
-  getFacalities(): Observable<any> {
+  getFacalities(): Observable<Facilities[]> {
     return this.httpClient
-      .get(this.urlBase + '/api/facalities')
+      .get<Facilities[]>(this.urlBase + '/api/facalities')
       .pipe(tap(response => this.store.set('facalities', response)));
   }
 }

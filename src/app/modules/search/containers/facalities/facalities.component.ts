@@ -1,9 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HotelService } from '../../services/hotel.service';
-import { from } from 'rxjs';
-import { filter, map, toArray } from 'rxjs/operators';
-import { Facalitie } from '../../resources/models/facalitie.model';
-import { FacalitiesServices } from '../../services/facalities.services';
+import { Facilities } from '../../resources/models/facilities.model';
 
 @Component({
   selector: 'app-facalities',
@@ -11,33 +7,9 @@ import { FacalitiesServices } from '../../services/facalities.services';
   styleUrls: ['./facalities.component.scss']
 })
 export class FacalitiesComponent implements OnInit {
-  private allFacalities: Facalitie[] = [];
-  private hotelFacalities: Facalitie[] = [];
+  @Input() facalities: Facilities[];
 
-  @Input() hotelId: number;
+  constructor() {}
 
-  constructor(private hotelService: HotelService, private facalities: FacalitiesServices) {}
-
-  ngOnInit(): void {
-    this.getAllFacalities();
-  }
-
-  public getAllFacalities(): void {
-    this.facalities.getFacalities().subscribe((data: Facalitie[]) => {
-      this.allFacalities = data;
-      this.getHotelFacalities(this.hotelId);
-    });
-  }
-
-  public getHotelFacalities(id: number): void {
-    from(this.allFacalities)
-      .pipe(
-        map((results: Facalitie) => results),
-        filter((result: Facalitie) => result.hotel.id === id),
-        toArray()
-      )
-      .subscribe((data: Facalitie[]) => {
-        this.hotelFacalities = data;
-      });
-  }
+  ngOnInit(): void {}
 }

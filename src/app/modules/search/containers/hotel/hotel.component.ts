@@ -9,18 +9,26 @@ import { Hotel } from '../../resources/models/hotel.model';
   styleUrls: ['./hotel.component.scss']
 })
 export class HotelComponent implements OnInit {
-  private hotel: Hotel;
+  hotel: Hotel;
+  id: number;
+  inProgress = false;
+
   constructor(private hotelService: HotelService, private route: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getHotelData();
   }
 
   getHotelData(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
+    this.id = +this.route.snapshot.paramMap.get('id');
 
-    this.hotelService.getHotel(id).subscribe((data: Hotel) => {
+    this.hotelService.getHotel(this.id).subscribe((data: Hotel) => {
+      console.log(data);
       this.hotel = data;
     });
+  }
+
+  onBookingRoom(booking: boolean): void {
+    this.inProgress = booking;
   }
 }

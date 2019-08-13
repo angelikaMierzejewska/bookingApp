@@ -1,6 +1,9 @@
-<mat-card *ngIf="user$ | async as user">
-  <p>{{ user.firstName }}</p>
-  <p>{{ user.lastName }}</p>
-  <p>{{ user.email }}</p>
-  <p>{{ user.login }}</p>
-</mat-card>
+<div *ngIf="user$ | async as user">
+  <mat-card>
+    <p>{{ user.firstName }}</p>
+    <p>{{ user.lastName }}</p>
+    <p>{{ user.email }}</p>
+    <p>{{ user.login }}</p>
+  </mat-card>
+  <app-booking [userName]="user.login"></app-booking>
+</div>

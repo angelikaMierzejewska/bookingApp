@@ -16,7 +16,8 @@ import {
   MatBadgeModule,
   MatCheckboxModule,
   MatAutocompleteModule,
-  MatDatepickerModule
+  MatDatepickerModule,
+  MatProgressBarModule
 } from '@angular/material';
 @NgModule({
   declarations: [],
@@ -40,7 +41,8 @@ import {
     MatBadgeModule,
     MatCheckboxModule,
     MatAutocompleteModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatProgressBarModule
   ]
 })
 export class CustomMaterialModule {}

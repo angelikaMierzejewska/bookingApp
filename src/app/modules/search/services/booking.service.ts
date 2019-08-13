@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '../../../../store';
-import { map, tap } from 'rxjs/operators';
+import { delay, map, tap } from 'rxjs/operators';
 import { Booking } from '../resources/models/booking.model';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class BookingService {
   constructor(private httpClient: HttpClient, private store: Store) {}
 
   public booking(data): Observable<any> {
-    return this.httpClient.post(this.urlBase + '/api/bookings', data).pipe(tap(response => {}));
+    return this.httpClient.post(this.urlBase + '/api/bookings', data).pipe(delay(2000));
   }
 
   public getAllBooking(): Observable<Booking[]> {
@@ -24,6 +24,10 @@ export class BookingService {
         console.log(this.store);
       })
     );
+  }
+
+  public getBooking(id: number): Observable<Booking> {
+    return this.httpClient.get<Booking>(this.urlBase + '/api/bookings/' + id);
   }
 
   // public getAllBooking(): Observable<Booking[]> {

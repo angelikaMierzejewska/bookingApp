@@ -22,10 +22,7 @@ import { Store } from '../store';
     SearchModule,
     HttpClientModule
   ],
-  providers: [
-    Store,
-    { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }
-  ],
+  providers: [Store, { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }],
 
   bootstrap: [AppComponent]
 })
