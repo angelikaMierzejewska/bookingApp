@@ -18,11 +18,10 @@ import { SearchFacade } from '../../+state/search.facade';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  //hotels$: Observable<Hotel[]> = this.searchFacade.hotels$;
   hotels$: Observable<Hotel[]> = this.searchFacade.hotels$;
   hotelsLoadError$ = this.searchFacade.hotelsLoadError$;
   hotelsLoading$ = this.searchFacade.hotelsLoading$;
-  booking$: Observable<Booking[]>;
+  booking$: Observable<Booking[]> = this.searchFacade.bookings$;
   locations: string[] = [];
   private locationControl = new FormControl();
   private minDate = new Date();
@@ -49,14 +48,10 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this.searchFacade.getBookings();
-
     this.searchFacade.getHotels();
-    this.store.set('bookingDate', this.searchForm.value.date);
 
-    // this.hotels$ = this.store.select<Hotel[]>('hotels');
-    this.booking$ = this.store.select<Booking[]>('booking');
-    // this.filterHotels$ = this.store.select('hotels');
-
+    const date = { ...this.searchForm.value.date };
+    this.searchFacade.setBookingDate(date);
     this.bookingService.getAllBooking().subscribe();
     this.hotelService.getAllHotels().subscribe();
     this.getAllLocations();
@@ -83,13 +78,7 @@ export class SearchComponent implements OnInit {
               moment(booking.endDate).format('YYYY-MM-DD') >= end)
         );
         const items = JSON.parse(JSON.stringify(hotels));
-        console.log(items);
-        items.map(h =>
-          h.rooms.map(room => {
-            room.booked = false;
-            console.log(room);
-          })
-        );
+        items.map(h => h.rooms.map(room => (room.booked = false)));
         bookedRooms.map((booking: Booking) =>
           booking.rooms.map((r: Room) => {
             const hotelId = r.hotel.id;
@@ -98,7 +87,7 @@ export class SearchComponent implements OnInit {
             room.booked = true;
           })
         );
-        this.store.set('hotels', items);
+        setTimeout(() => this.searchFacade.setHotels(items));
       });
   }
 
@@ -124,7 +113,7 @@ export class SearchComponent implements OnInit {
     this.filteredOptions$ = this.searchForm.valueChanges.pipe(
       tap(x => {
         this.filterHotelByLocation(x.locationControl);
-        this.store.set('bookingDate', x.date);
+        this.searchFacade.setBookingDate(x.date);
         this.filterHotelByDate();
       }),
       startWith(''),

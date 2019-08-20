@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HotelService } from '../../services/hotel.service';
 import { ActivatedRoute } from '@angular/router';
 import { Hotel } from '../../resources/models/hotel.model';
+import { SearchFacade } from '../../+state/search.facade';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-hotel',
@@ -9,11 +11,15 @@ import { Hotel } from '../../resources/models/hotel.model';
   styleUrls: ['./hotel.component.scss']
 })
 export class HotelComponent implements OnInit {
-  hotel: Hotel;
   id: number;
   inProgress = false;
+  hotel$: Observable<Hotel>;
 
-  constructor(private hotelService: HotelService, private route: ActivatedRoute) {}
+  constructor(
+    private hotelService: HotelService,
+    private route: ActivatedRoute,
+    private searchFacade: SearchFacade
+  ) {}
 
   ngOnInit(): void {
     this.getHotelData();
@@ -21,10 +27,7 @@ export class HotelComponent implements OnInit {
 
   getHotelData(): void {
     this.id = +this.route.snapshot.paramMap.get('id');
-
-    this.hotelService.getHotel(this.id).subscribe((data: Hotel) => {
-      this.hotel = data;
-    });
+    this.hotel$ = this.searchFacade.getHotel$(this.id);
   }
 
   onBookingRoom(booking: boolean): void {

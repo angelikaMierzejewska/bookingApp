@@ -16,6 +16,25 @@ const getHotelsLoadError = createSelector(
   state => state.hotelsLoadError
 );
 
+const getBookingDate = () =>
+  createSelector(
+    getSearchState,
+    state => state.bookingDate
+  );
+
+const getHotel = id =>
+  createSelector(
+    getSearchState,
+    state => state.hotels.find(hotel => hotel.id === id)
+  );
+
+const getRoomsByHotel = id =>
+  createSelector(
+    getSearchState,
+    state => {
+      return state.hotels.find(hotel => hotel.id === id).rooms;
+    }
+  );
 const getBookings = createSelector(
   getSearchState,
   state => state.bookings
@@ -30,10 +49,13 @@ const getBookingsLoadError = createSelector(
 );
 
 export const searchQuery = {
+  getHotel,
+  getRoomsByHotel,
   getHotels,
   getHotelsLoading,
   getHotelsLoadError,
   getBookings,
   getBookingsLoading,
-  getBookingsLoadError
+  getBookingsLoadError,
+  getBookingDate
 };

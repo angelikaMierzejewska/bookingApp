@@ -2,50 +2,36 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { RoomService } from '../../services/room.service';
 import { Room } from '../../resources/models/room.model';
 import { Store } from '../../../../../store';
-import { filter, take } from 'rxjs/operators';
+import { filter, map, take } from 'rxjs/operators';
 import { BookingService } from '../../services/booking.service';
 import { MatSnackBar } from '@angular/material';
 import { Hotel } from '../../resources/models/hotel.model';
 import { UserBooking } from '../../resources/interfaces/user-booking.interface';
 import { Observable } from 'rxjs';
+import { SearchFacade } from '../../+state/search.facade';
+import { BookingDate } from '../../resources/interfaces/booking-date.interface';
 
 @Component({
   selector: 'app-rooms',
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent implements OnInit, OnDestroy {
-  rooms: Room[];
+export class RoomsComponent implements OnInit {
   disableButton = false;
-  @Input() hotelId: number;
+  @Input() rooms: Room[];
   @Output() bookRoom = new EventEmitter<boolean>();
-  private hotels$;
+  bookingD: Observable<BookingDate>;
 
   constructor(
     private roomService: RoomService,
     private store: Store,
     private bookingService: BookingService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private searchFacade: SearchFacade
   ) {}
 
   ngOnInit(): void {
-    this.getRooms();
-  }
-  ngOnDestroy(): void {
-    this.hotels$.unsubscribe();
-  }
-
-  getRooms(): void {
-    this.hotels$ = this.store
-      .select<Hotel[]>('hotels')
-      .pipe(filter((hotels: Hotel[]) => hotels.length > 0))
-      .subscribe(
-        (hotels: Hotel[]) => {
-          const hotel: Hotel = hotels.find((val: Hotel) => val.id === this.hotelId);
-          this.rooms = hotel.rooms;
-        },
-        error => {}
-      );
+    this.bookingD = this.searchFacade.getBookingDate();
   }
 
   onBooking(id: number): void {

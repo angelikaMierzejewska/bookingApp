@@ -1,8 +1,9 @@
 import { Hotel } from '../resources/models/hotel.model';
 import { fromSearchActions } from './search.actions';
 import { Booking } from '../resources/models/booking.model';
+import { BookingDate } from '../resources/interfaces/booking-date.interface';
 
-export const HOTEL_FEATURE_KEY = 'hotel';
+export const HOTEL_FEATURE_KEY = 'search';
 
 export interface HotelPartialState {
   readonly [HOTEL_FEATURE_KEY]: SearchState;
@@ -13,6 +14,12 @@ export interface SearchState {
   hotelsLoading: boolean;
   hotelsLoadError: boolean;
 
+  hotel: Hotel;
+  hotelLoading: boolean;
+  hotelLoadError: boolean;
+
+  bookingDate: BookingDate;
+
   bookings: Booking[];
   bookingsLoading: boolean;
   bookingsLoadError: boolean;
@@ -22,6 +29,13 @@ export const initialState: SearchState = {
   hotels: [],
   hotelsLoading: false,
   hotelsLoadError: false,
+
+  hotel: null,
+  hotelLoading: false,
+  hotelLoadError: false,
+
+  bookingDate: null,
+
   bookings: [],
   bookingsLoading: false,
   bookingsLoadError: false
@@ -42,6 +56,26 @@ export function searchReducer(
 
     case fromSearchActions.Types.GetHotelsFail:
       state = { ...state, hotelsLoading: false, hotelsLoadError: true };
+      break;
+
+    case fromSearchActions.Types.GetHotel:
+      state = { ...state, hotelLoading: true, hotelLoadError: false, hotel: null };
+      break;
+
+    case fromSearchActions.Types.GetHotelSuccess:
+      state = { ...state, hotel: action.payload, hotelLoading: false };
+      break;
+
+    case fromSearchActions.Types.GetHotelFail:
+      state = { ...state, hotelLoading: false, hotelLoadError: true };
+      break;
+
+    case fromSearchActions.Types.SetHotels:
+      state = { ...state, hotels: action.payload };
+      break;
+
+    case fromSearchActions.Types.SetBookingDate:
+      state = { ...state, bookingDate: action.payload };
       break;
 
     case fromSearchActions.Types.GetBookings:
