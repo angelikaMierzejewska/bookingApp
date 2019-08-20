@@ -1,57 +1,98 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { RoomService } from '../../services/room.service';
-import { Observable } from 'rxjs';
 import { Room } from '../../resources/models/room.model';
 import { Store } from '../../../../../store';
-import { map } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { BookingService } from '../../services/booking.service';
 import { MatSnackBar } from '@angular/material';
-import { HotelService } from '../../services/hotel.service';
 import { Hotel } from '../../resources/models/hotel.model';
+import { UserBooking } from '../../resources/interfaces/user-booking.interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-rooms',
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent implements OnInit {
-  private rooms: Room[];
-  private hotels: Hotel[];
+export class RoomsComponent implements OnInit, OnDestroy {
+  rooms: Room[];
+  disableButton = false;
   @Input() hotelId: number;
+  @Output() bookRoom = new EventEmitter<boolean>();
+  private hotels$;
 
   constructor(
     private roomService: RoomService,
     private store: Store,
     private bookingService: BookingService,
-    private snackBar: MatSnackBar,
-    private hotelService: HotelService
+    private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit() {
-    this.roomService.getAllRooms().subscribe();
-    this.hotels = this.store.value.hotels;
-    const hotel = this.hotels.find(hotel => hotel.id === this.hotelId);
-    this.rooms = hotel.rooms;
+  ngOnInit(): void {
+    this.getRooms();
+  }
+  ngOnDestroy(): void {
+    this.hotels$.unsubscribe();
   }
 
-  onBooking(id: number) {
-    if (this.store.value.user) {
-      const rooms = this.store.value.rooms;
-      const bookingRoom = [];
-      bookingRoom.push(rooms.find(room => room.id === id));
+  getRooms(): void {
+    this.hotels$ = this.store
+      .select<Hotel[]>('hotels')
+      .pipe(filter((hotels: Hotel[]) => hotels.length > 0))
+      .subscribe(
+        (hotels: Hotel[]) => {
+          const hotel: Hotel = hotels.find((val: Hotel) => val.id === this.hotelId);
+          this.rooms = hotel.rooms;
+        },
+        error => {}
+      );
+  }
 
-      const data = {
+  onBooking(id: number): void {
+    if (this.store.value.user) {
+      const bookingRoom: Room[] = [];
+      bookingRoom.push(this.rooms.find(room => room.id === id));
+
+      const data: UserBooking = {
         user: this.store.value.user.login,
         endDate: this.store.value.bookingDate.end,
         startDate: this.store.value.bookingDate.begin,
         rooms: bookingRoom
       };
-      this.bookingService.booking(data).subscribe(() => {
-        this.openSnackBar('Booking done', 'X');
-      });
+      this.toggleBooking(true);
+
+      this.bookingService.booking(data).subscribe(
+        (response: UserBooking) => {
+          this.updateStore(response);
+          this.toggleBooking(false);
+
+          this.openSnackBar('Booking done', 'X');
+        },
+        error => {}
+      );
     } else {
       this.openSnackBar('You must login', 'X');
     }
+  }
+
+  toggleBooking(val: boolean): void {
+    this.bookRoom.emit(val);
+    this.disableButton = val;
+  }
+
+  updateStore(response: UserBooking): void {
+    this.store
+      .select<Hotel[]>('hotels')
+      .pipe(take(1))
+      .subscribe(
+        hotels => {
+          const hotel = hotels.find(h => h.id === response.rooms[0].hotel.id);
+          const room = hotel.rooms.find(r => r.id === response.rooms[0].id);
+          room.booked = true;
+          this.store.set('hotels', hotels);
+        },
+        error => {}
+      );
   }
 
   public openSnackBar(message: string, action: string): void {

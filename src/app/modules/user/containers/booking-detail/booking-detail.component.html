@@ -1,0 +1,8 @@
+<div *ngIf="booking">
+  <p *ngIf="booking.startDate">Booking start date: {{ booking.startDate }}</p>
+  <p *ngIf="booking.endDate">Booking end date: {{ booking.endDate }}</p>
+  <p>Room number: {{ booking.rooms[0].number }}</p>
+  <p>Room capacity: {{ booking.rooms[0].capacity }}</p>
+  <p>Hotel name: {{ booking.rooms[0].hotel.name }}</p>
+  <p>Hotel location: {{ booking.rooms[0].hotel.location }}</p>
+</div>

@@ -21,27 +21,32 @@ export class HotelService {
   getAllHotels(): Observable<Hotel[]> {
     return this.httpClient.get<Hotel[]>(this.urlBase + '/api/hotels').pipe(
       tap(response => {
-        this.roomService.getAllRooms().subscribe(data => {
-          from(data)
-            .pipe(
-              tap(room => {
-                room.booked = false;
-              }),
-              groupBy(room => room.hotel.id),
-              mergeMap(group => group.pipe(toArray())),
-              map(x => {
-                const hotel: Hotel = response.find(h => h.id === x[0].hotel.id);
-                hotel.rooms = x;
-              }),
-              tap(() => this.store.set('hotels', response))
-            )
-            .subscribe();
-        });
+        response.map(hotel => hotel.rooms.map(room => (room.booked = false)));
+        this.store.set('hotels', response);
       })
     );
+    // tap(response => {
+    //   this.roomService.getAllRooms().subscribe(data => {
+    //     from(data)
+    //       .pipe(
+    //         tap(room => {
+    //           room.booked = false;
+    //         }),
+    //         groupBy(room => room.hotel.id),
+    //         mergeMap(group => group.pipe(toArray())),
+    //         map(x => {
+    //           const hotel: Hotel = response.find(h => h.id === x[0].hotel.id);
+    //           hotel.rooms = x;
+    //         }),
+    //         tap(() => this.store.set('hotels', response))
+    //       )
+    //       .subscribe();
+    //   });
+    // })
+    // ();
   }
 
-  getHotel(id: number) {
-    return this.httpClient.get(this.urlBase + '/api/hotels/' + id);
+  getHotel(id: number): Observable<Hotel> {
+    return this.httpClient.get<Hotel>(this.urlBase + '/api/hotels/' + id);
   }
 }

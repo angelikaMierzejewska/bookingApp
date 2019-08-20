@@ -1,0 +1,28 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="startDate">
+    <th mat-header-cell *matHeaderCellDef>start date</th>
+    <td mat-cell *matCellDef="let element">{{ element.startDate | date }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="endDate">
+    <th mat-header-cell *matHeaderCellDef>end date</th>
+    <td mat-cell *matCellDef="let element">{{ element.endDate | date }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="rooms">
+    <th mat-header-cell *matHeaderCellDef>hotel</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.rooms[0].hotel.name }}
+      <span *ngFor="let room of element.rooms"> Rooms: {{ room.number }}</span>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="show">
+    <th mat-header-cell *matHeaderCellDef>show booking details</th>
+    <td mat-cell *matCellDef="let element">
+      <mat-icon [routerLink]="['/booking/', element.id]">create</mat-icon>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

@@ -2,7 +2,14 @@
   <p>
     Room number: {{ room.number }}, capacity {{ room.capacity }}
 
-    <a mat-raised-button color="primary" *ngIf="!room.booked" (click)="onBooking(room.id)">Book</a>
-    <span *ngIf="room.booked"> Booked!</span>
+    <a
+      mat-raised-button
+      color="primary"
+      *ngIf="!room.booked"
+      (click)="onBooking(room.id)"
+      [disabled]="disableButton"
+      >book</a
+    >
+    <span *ngIf="room.booked"> booked!</span>
   </p>
 </div>

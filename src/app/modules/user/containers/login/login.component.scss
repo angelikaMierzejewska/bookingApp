@@ -10,10 +10,6 @@
 
   height: auto;
   transition: all 1s ease-in-out;
-
-  //&--height {
-  //  height: 600px;
-  //}
 }
 
 .user-form__img {
@@ -30,10 +26,6 @@ mat-form-field {
   width: 100%;
 }
 
-.user-form__remember {
-  display: flex;
-  align-items: center;
-}
 .user-form__bottom {
   display: flex;
   justify-content: space-between;

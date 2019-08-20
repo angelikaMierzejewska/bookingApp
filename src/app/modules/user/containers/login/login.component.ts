@@ -5,6 +5,7 @@ import { MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs';
 import { User } from '../../resources/models/User';
 import { Store } from '../../../../../store';
+import { LoginUser } from '../../resources/interfaces/login-user.interface';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { Store } from '../../../../../store';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  private loginForm = this.formBuilder.group({
+  loginForm = this.formBuilder.group({
     firstName: [''],
     lastName: [''],
     email: ['', [Validators.email]],
@@ -20,16 +21,16 @@ export class LoginComponent implements OnInit {
     password: [
       '',
       [
-        Validators.required,
-        Validators.minLength(8)
+        Validators.required
+        // Validators.minLength(8)
         // Validators.pattern('(.*[A-Z].*)')
       ]
     ],
     imageUrl: [''],
     rememberMe: false
   });
-  private isLoading = false;
-  private registerForm = false;
+  isLoading = false;
+  registerForm = false;
   private token$: Observable<string>;
   private user$: Observable<User>;
   constructor(
@@ -50,7 +51,7 @@ export class LoginComponent implements OnInit {
       if (this.registerForm) {
         this.userDataService.registerUser(this.loginForm.value).subscribe();
       } else {
-        const login = {
+        const login: LoginUser = {
           username: this.loginForm.value.login,
           password: this.loginForm.value.password,
           rememberMe: this.loginForm.value.rememberMe

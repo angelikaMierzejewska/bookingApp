@@ -1,18 +1,25 @@
-.card {
-  width: 400px;
+.search__card__box {
+  width: 300px;
   margin: 10px;
 }
 
-.card__box {
+.search__card {
   display: flex;
+  flex-wrap: wrap;
 }
 
-.example-form {
+.search__form {
   min-width: 150px;
   max-width: 500px;
   width: 100%;
+  padding: 50px;
+  margin: 50px;
+  background: white;
 }
 
-.example-full-width {
+.search__full-width {
   width: 100%;
+}
+input::placeholder {
+  text-transform: capitalize;
 }

@@ -8,10 +8,16 @@ import { HotelComponent } from './containers/hotel/hotel.component';
 import { RoomsComponent } from './containers/rooms/rooms.component';
 import { MatNativeDateModule } from '@angular/material';
 import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
-import { BookingComponent } from './containers/booking/booking.component';
+import { BookingComponent } from '../shared/containers/booking/booking.component';
 import { SearchResultComponent } from './components/search-result/search-result.component';
 import { RouterModule } from '@angular/router';
 import { AvailableRoomsComponent } from './components/available-rooms/available-rooms.component';
+import { CustomMaterialModule } from '../shared/modules/custom-material.module';
+import { SearchFacade } from './+state/search.facade';
+import { HOTEL_FEATURE_KEY, searchReducer, initialState } from './+state/search.reducer';
+import { StoreModule } from '@ngrx/store';
+import { SearchEffects } from './+state/search.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -19,7 +25,6 @@ import { AvailableRoomsComponent } from './components/available-rooms/available-
     FacalitiesComponent,
     HotelComponent,
     RoomsComponent,
-    BookingComponent,
     SearchResultComponent,
     AvailableRoomsComponent
   ],
@@ -31,8 +36,11 @@ import { AvailableRoomsComponent } from './components/available-rooms/available-
     MatNativeDateModule,
     SatNativeDateModule,
     SatDatepickerModule,
-    RouterModule
+    RouterModule,
+    StoreModule.forFeature(HOTEL_FEATURE_KEY, searchReducer, { initialState }),
+    EffectsModule.forFeature([SearchEffects])
   ],
+  providers: [SearchFacade],
   exports: [SearchComponent]
 })
 export class SearchModule {}

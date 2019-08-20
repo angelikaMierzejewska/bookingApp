@@ -1,8 +1,8 @@
 export class User {
-  activated: true;
+  activated: boolean;
   email: string;
   firstName: string;
-  id: 0;
+  id: number;
   imageUrl: string;
   lastName: string;
   login: string;

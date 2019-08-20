@@ -13,7 +13,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private store: Store) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.user$ = this.store.select<User>('user');
   }
 }

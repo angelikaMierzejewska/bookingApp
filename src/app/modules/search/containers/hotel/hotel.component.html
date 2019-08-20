@@ -1,6 +1,8 @@
+<mat-progress-bar *ngIf="inProgress" mode="indeterminate"></mat-progress-bar>
+
 <div *ngIf="hotel">
   <h1>{{ hotel.name }}</h1>
   <p>{{ hotel.location }}</p>
-  <app-facalities [hotelId]="hotel.id"></app-facalities>
-  <app-rooms [hotelId]="hotel.id"></app-rooms>
+  <app-facalities [facalities]="hotel.facilities"></app-facalities>
+  <app-rooms [hotelId]="hotel.id" (bookRoom)="onBookingRoom($event)"></app-rooms>
 </div>

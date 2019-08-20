@@ -7,7 +7,6 @@ import { User } from '../../modules/user/resources/models/User';
 import { LoginComponent } from '../../modules/user/containers/login/login.component';
 import { UserDataService } from '../../modules/user/services/user-data.service';
 
-
 @Component({
   selector: 'app-tool-bar',
   templateUrl: './tool-bar.component.html',
@@ -22,7 +21,7 @@ export class ToolBarComponent implements OnInit {
     private store: Store
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.user$ = this.store.select<User>('token');
   }
 
