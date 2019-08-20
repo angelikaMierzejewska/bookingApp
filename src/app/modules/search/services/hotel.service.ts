@@ -23,7 +23,6 @@ export class HotelService {
       tap(response => {
         response.map(hotel => hotel.rooms.map(room => (room.booked = false)));
         this.store.set('hotels', response);
-        console.log(response);
       })
     );
     // tap(response => {

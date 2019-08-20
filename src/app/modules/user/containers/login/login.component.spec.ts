@@ -11,6 +11,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 import { Store } from '../../../../../store';
 import { MatDialogRef } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -22,12 +23,12 @@ describe('LoginComponent', () => {
       declarations: [LoginComponent],
       imports: [
         CommonModule,
+        BrowserAnimationsModule,
         SharedModule,
         FormsModule,
         ReactiveFormsModule,
         CustomMaterialModule,
-        RouterModule.forRoot([]),
-        BrowserAnimationsModule
+        RouterTestingModule
       ],
       providers: [
         UserDataService,
@@ -58,7 +59,7 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('form should be invalide', async(() => {
+  it('form should be invalid', async(() => {
     component.loginForm.controls['firstName'].setValue('');
     component.loginForm.controls['lastName'].setValue('');
     component.loginForm.controls['email'].setValue('');
@@ -76,11 +77,6 @@ describe('LoginComponent', () => {
     component.loginForm.controls['password'].setValue('aa');
 
     expect(component.loginForm.valid).toBeTruthy();
-  }));
-
-  it('form should be invalide', async(() => {
-    component.loginForm.controls['firstName'].setValue('');
-    expect(component.loginForm.valid).toBeFalsy();
   }));
 
   it('should toggle registerForm ', () => {

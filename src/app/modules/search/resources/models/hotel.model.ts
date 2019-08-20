@@ -1,10 +1,10 @@
 import { Room } from './room.model';
-import { Facilities } from './facilities.model';
+import { Facility } from './facility.model';
 
 export class Hotel {
   id: number;
   name: string;
   location: string;
-  facilities: Facilities[];
+  facilities: Facility[];
   rooms: Room[];
 }

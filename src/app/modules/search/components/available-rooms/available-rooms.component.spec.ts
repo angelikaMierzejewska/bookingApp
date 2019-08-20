@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material';
 import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
 import { RouterModule } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AvailableRoomsComponent', () => {
   let component: AvailableRoomsComponent;
@@ -35,7 +36,8 @@ describe('AvailableRoomsComponent', () => {
         MatNativeDateModule,
         SatNativeDateModule,
         SatDatepickerModule,
-        RouterModule.forRoot([])
+        //RouterModule.forRoot([]),
+        RouterTestingModule
       ],
       providers: [{ provide: APP_BASE_HREF, useValue: '/' }]
     }).compileComponents();

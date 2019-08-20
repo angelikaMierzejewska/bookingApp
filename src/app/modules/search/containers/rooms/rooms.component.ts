@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { RoomService } from '../../services/room.service';
 import { Room } from '../../resources/models/room.model';
 import { Store } from '../../../../../store';
@@ -7,17 +7,19 @@ import { BookingService } from '../../services/booking.service';
 import { MatSnackBar } from '@angular/material';
 import { Hotel } from '../../resources/models/hotel.model';
 import { UserBooking } from '../../resources/interfaces/user-booking.interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-rooms',
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent implements OnInit {
+export class RoomsComponent implements OnInit, OnDestroy {
   rooms: Room[];
   disableButton = false;
   @Input() hotelId: number;
   @Output() bookRoom = new EventEmitter<boolean>();
+  private hotels$;
 
   constructor(
     private roomService: RoomService,
@@ -29,9 +31,12 @@ export class RoomsComponent implements OnInit {
   ngOnInit(): void {
     this.getRooms();
   }
+  ngOnDestroy(): void {
+    this.hotels$.unsubscribe();
+  }
 
   getRooms(): void {
-    this.store
+    this.hotels$ = this.store
       .select<Hotel[]>('hotels')
       .pipe(filter((hotels: Hotel[]) => hotels.length > 0))
       .subscribe(
@@ -39,7 +44,7 @@ export class RoomsComponent implements OnInit {
           const hotel: Hotel = hotels.find((val: Hotel) => val.id === this.hotelId);
           this.rooms = hotel.rooms;
         },
-        error => console.log(error)
+        error => {}
       );
   }
 
@@ -63,14 +68,14 @@ export class RoomsComponent implements OnInit {
 
           this.openSnackBar('Booking done', 'X');
         },
-        error => console.log(error)
+        error => {}
       );
     } else {
       this.openSnackBar('You must login', 'X');
     }
   }
 
-  toggleBooking(val: boolean) {
+  toggleBooking(val: boolean): void {
     this.bookRoom.emit(val);
     this.disableButton = val;
   }
@@ -86,7 +91,7 @@ export class RoomsComponent implements OnInit {
           room.booked = true;
           this.store.set('hotels', hotels);
         },
-        error => console.log(error)
+        error => {}
       );
   }
 

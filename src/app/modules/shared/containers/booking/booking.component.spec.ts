@@ -14,16 +14,13 @@ describe('BookingComponent', () => {
       imports: [SharedModule],
       providers: [Store]
     }).compileComponents();
+  }));
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(BookingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
-
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(BookingComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

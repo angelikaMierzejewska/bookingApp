@@ -17,3 +17,13 @@ mat-toolbar-row {
   display: flex;
   justify-content: space-between;
 }
+
+.title {
+  text-transform: capitalize;
+}
+button {
+  text-transform: capitalize;
+}
+.language {
+  text-transform: uppercase;
+}

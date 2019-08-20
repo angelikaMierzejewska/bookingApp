@@ -5,6 +5,8 @@ export class Booking implements Deserializable {
   endDate: Date;
   rooms: Room[];
   startDate: Date;
+  id: number;
+  user: string;
 
   deserialize(input: any): this {
     Object.assign(this, input);

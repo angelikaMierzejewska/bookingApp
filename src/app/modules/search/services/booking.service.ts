@@ -14,14 +14,13 @@ export class BookingService {
   constructor(private httpClient: HttpClient, private store: Store) {}
 
   public booking(data): Observable<any> {
-    return this.httpClient.post(this.urlBase + '/api/bookings', data).pipe(delay(2000));
+    return this.httpClient.post(this.urlBase + '/api/bookings', data);
   }
 
   public getAllBooking(): Observable<Booking[]> {
     return this.httpClient.get<Booking[]>(this.urlBase + '/api/bookings').pipe(
       tap(response => {
         this.store.set('booking', response);
-        console.log(this.store);
       })
     );
   }
@@ -29,21 +28,4 @@ export class BookingService {
   public getBooking(id: number): Observable<Booking> {
     return this.httpClient.get<Booking>(this.urlBase + '/api/bookings/' + id);
   }
-
-  // public getAllBooking(): Observable<Booking[]> {
-  //   return this.httpClient.get<Booking[]>(this.urlBase + '/api/bookings').pipe(
-  //     map(data =>
-  //       data.map(booking =>
-  //         new Booking().deserialize({
-  //           endDate: booking.endDate,
-  //           rooms: booking.rooms.map(room => room.id),
-  //           startDate: booking.startDate
-  //         })
-  //       )
-  //     ),
-  //     tap(response => {
-  //       this.store.set('booking', response);
-  //     })
-  //   );
-  // }
 }

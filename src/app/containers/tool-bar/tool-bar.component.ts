@@ -22,7 +22,7 @@ export class ToolBarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.user$ = this.store.select<User>('token');
+    this.user$ = this.store.select<User>('token');
   }
 
   onLogin(): void {

@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '../../../../../store';
 import { AppModule } from '../../../../app.module';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('BookingDetailComponent', () => {
   let component: BookingDetailComponent;
@@ -25,7 +26,8 @@ describe('BookingDetailComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         CustomMaterialModule,
-        RouterModule.forRoot([])
+        // RouterModule.forRoot([])
+        RouterTestingModule
       ],
       providers: [UserDataService, HttpClient, Store, { provide: APP_BASE_HREF, useValue: '/' }]
     }).compileComponents();

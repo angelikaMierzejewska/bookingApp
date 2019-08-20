@@ -27,14 +27,14 @@ describe('SearchComponent', () => {
       imports: [
         HttpClientModule,
         CommonModule,
+        BrowserAnimationsModule,
         SharedModule,
         FormsModule,
         ReactiveFormsModule,
         MatNativeDateModule,
         SatNativeDateModule,
         SatDatepickerModule,
-        RouterModule.forRoot([]),
-        BrowserAnimationsModule,
+        // RouterModule.forRoot([]),
         RouterTestingModule
       ],
 

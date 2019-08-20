@@ -1,7 +1,7 @@
 <div>
   <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <span>My app</span>
+      <span class="title">my app</span>
 
       <div
         fxShow="true"
@@ -9,27 +9,27 @@
         class="tool-bar__navbar--web"
         *ngIf="user$ | async; else logout"
       >
-        <button mat-button routerLink="/">Search</button>
-        <button mat-button *ngIf="user$ | async" routerLink="/profile">Profile</button>
+        <button mat-button routerLink="/">search</button>
+        <button mat-button *ngIf="user$ | async" routerLink="/profile">profile</button>
 
-        <button mat-button (click)="onLogout()" *ngIf="user$ | async">Logout</button>
+        <button mat-button (click)="onLogout()" *ngIf="user$ | async">logout</button>
 
-        <button mat-button [matMenuTriggerFor]="menu">PL</button>
+        <button mat-button [matMenuTriggerFor]="menu" class="language">pl</button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>PL</button>
-          <button mat-menu-item>EN</button>
+          <button mat-menu-item class="language">pl</button>
+          <button mat-menu-item class="language">en</button>
         </mat-menu>
       </div>
 
       <ng-template #logout>
         <div fxShow="true" fxHide.lt-md class="tool-bar__navbar--web">
-          <button mat-button routerLink="/">Search</button>
-          <button mat-button (click)="onLogin()">Login</button>
+          <button mat-button routerLink="/">search</button>
+          <button mat-button (click)="onLogin()">login</button>
 
-          <button mat-button [matMenuTriggerFor]="menu">PL</button>
+          <button mat-button [matMenuTriggerFor]="menu" class="language">pl</button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>PL</button>
-            <button mat-menu-item>EN</button>
+            <button mat-menu-item class="language">pl</button>
+            <button mat-menu-item class="language">en</button>
           </mat-menu>
         </div>
       </ng-template>
@@ -49,9 +49,9 @@
   <mat-sidenav-container fxFlexFill>
     <mat-sidenav #sidenav>
       <mat-nav-list>
-        <a (click)="sidenav.toggle()" mat-list-item>Close</a>
+        <a (click)="sidenav.toggle()" mat-list-item>close</a>
 
-        <button mat-button (click)="onLogin()">Login</button>
+        <button mat-button (click)="onLogin()">login</button>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content fxFlexFill>

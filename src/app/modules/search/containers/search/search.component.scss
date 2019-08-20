@@ -20,3 +20,6 @@
 .search__full-width {
   width: 100%;
 }
+input::placeholder {
+  text-transform: capitalize;
+}

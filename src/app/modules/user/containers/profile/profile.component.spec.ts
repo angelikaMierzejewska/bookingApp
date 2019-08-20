@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from '../../../shared/modules/custom-material.module';
 import { RouterModule } from '@angular/router';
 import { Store } from '../../../../../store';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -21,20 +22,17 @@ describe('ProfileComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         CustomMaterialModule,
-        RouterModule.forRoot([])
+        RouterTestingModule
       ],
       providers: [Store, { provide: APP_BASE_HREF, useValue: '/' }]
     }).compileComponents();
+  }));
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
-
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(ProfileComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

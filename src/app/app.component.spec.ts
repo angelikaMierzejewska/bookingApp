@@ -11,6 +11,7 @@ import { SearchModule } from './modules/search/search.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { UserDataService } from './modules/user/services/user-data.service';
 import { Store } from '../store';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -23,7 +24,7 @@ describe('AppComponent', () => {
         SharedModule,
         UserModule,
         SearchModule,
-        HttpClientModule,
+        HttpClientTestingModule,
         RouterTestingModule
       ],
       declarations: [AppComponent, ToolBarComponent],
@@ -37,16 +38,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  // it(`should have as title 'bookingApp'`, () => {
-  //   const fixture = TestBed.createComponent(AppComponent);
-  //   const app = fixture.debugElement.componentInstance;
-  //   expect(app.title).toEqual('bookingApp');
-  // });
+  it(`should have as title 'bookingApp'`, () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app.title).toEqual('bookingApp');
+  });
 
-  // it('should render title in a h1 tag', () => {
-  //   const fixture = TestBed.createComponent(AppComponent);
-  //   fixture.detectChanges();
-  //   const compiled = fixture.debugElement.nativeElement;
-  //   expect(compiled.querySelector('h1').textContent).toContain('Welcome to bookingApp!');
-  // });
+  it('should render title in a h1 tag', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain('Welcome to bookingApp!');
+  });
 });

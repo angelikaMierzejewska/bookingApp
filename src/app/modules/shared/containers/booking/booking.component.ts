@@ -31,7 +31,6 @@ export class BookingComponent implements OnInit {
         )
       )
       .subscribe((booking: UserBooking[]) => {
-        console.log(booking);
         this.dataSource = booking;
       });
   }

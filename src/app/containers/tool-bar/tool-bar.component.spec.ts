@@ -12,6 +12,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Store } from '../../../store';
 import { HttpRequestInterceptor } from '../../modules/shared/interceptors/http-request.interceptor';
 import { APP_BASE_HREF } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ToolBarComponent', () => {
   let component: ToolBarComponent;
@@ -27,7 +28,7 @@ describe('ToolBarComponent', () => {
         SharedModule,
         UserModule,
         SearchModule,
-        HttpClientModule
+        HttpClientTestingModule
       ],
 
       providers: [
@@ -36,16 +37,13 @@ describe('ToolBarComponent', () => {
         { provide: APP_BASE_HREF, useValue: '/' }
       ]
     }).compileComponents();
+  }));
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(ToolBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
-
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(ToolBarComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

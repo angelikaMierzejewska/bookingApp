@@ -13,14 +13,12 @@ export class AvailableRoomsComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.checkAvailableRooms();
   }
 
-  checkAvailableRooms() {
+  checkAvailableRooms(): void {
     const availableRoom = this.rooms.find(room => room.booked === false);
-    if (availableRoom) {
-      this.availableRooms = true;
-    }
+    this.availableRooms = !!availableRoom;
   }
 }

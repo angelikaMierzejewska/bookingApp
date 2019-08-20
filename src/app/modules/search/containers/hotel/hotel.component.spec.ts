@@ -17,6 +17,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Store } from '../../../../../store';
 import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('HotelComponent', () => {
   let component: HotelComponent;
@@ -42,9 +43,9 @@ describe('HotelComponent', () => {
         MatNativeDateModule,
         SatNativeDateModule,
         SatDatepickerModule,
-        RouterModule,
-        HttpClientModule,
-        RouterModule.forRoot([])
+        RouterTestingModule,
+        HttpClientTestingModule
+        // RouterModule.forRoot([])
       ],
       providers: [HttpClient, Store, { provide: APP_BASE_HREF, useValue: '/' }]
     }).compileComponents();

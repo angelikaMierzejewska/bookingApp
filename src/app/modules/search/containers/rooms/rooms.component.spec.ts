@@ -27,7 +27,8 @@ describe('RoomsComponent', () => {
         MatNativeDateModule,
         SatNativeDateModule,
         SatDatepickerModule,
-        RouterModule.forRoot([])
+        // RouterModule.forRoot([])
+        RouterTestingModule
       ],
       providers: [
         Store,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HotelService } from '../../services/hotel.service';
 import { Hotel } from '../../resources/models/hotel.model';
 import { Observable, combineLatest } from 'rxjs';
@@ -18,19 +18,16 @@ import { SearchFacade } from '../../+state/search.facade';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  private filterHotels$: Observable<Hotel[]> = this.searchFasde.hotels$;
-  private filteredOptions$: Observable<string[]>;
-  hotels$: Observable<Hotel[]> = this.searchFasde.hotels$;
-  hotelsLoadError$ = this.searchFasde.hotelsLoadError$;
-  hotelsLoading$ = this.searchFasde.hotelsLoading$;
-
-  booking2$ = this.searchFasde.bookings$;
-
+  //hotels$: Observable<Hotel[]> = this.searchFacade.hotels$;
+  hotels$: Observable<Hotel[]> = this.searchFacade.hotels$;
+  hotelsLoadError$ = this.searchFacade.hotelsLoadError$;
+  hotelsLoading$ = this.searchFacade.hotelsLoading$;
   booking$: Observable<Booking[]>;
-
   locations: string[] = [];
   private locationControl = new FormControl();
   private minDate = new Date();
+  private filterHotels$: Observable<Hotel[]> = this.searchFacade.hotels$;
+  private filteredOptions$: Observable<string[]>;
   private searchForm = this.formBuilder.group({
     locationControl: new FormControl(),
     date: [
@@ -47,18 +44,18 @@ export class SearchComponent implements OnInit {
     private store: Store,
     private formBuilder: FormBuilder,
     private bookingService: BookingService,
-    private searchFasde: SearchFacade
+    private searchFacade: SearchFacade
   ) {}
 
   ngOnInit() {
-    this.searchFasde.getBookings();
+    this.searchFacade.getBookings();
 
-    this.searchFasde.getHotels();
+    this.searchFacade.getHotels();
     this.store.set('bookingDate', this.searchForm.value.date);
 
-    this.hotels$ = this.store.select<Hotel[]>('hotels');
+    // this.hotels$ = this.store.select<Hotel[]>('hotels');
     this.booking$ = this.store.select<Booking[]>('booking');
-    this.filterHotels$ = this.store.select('hotels');
+    // this.filterHotels$ = this.store.select('hotels');
 
     this.bookingService.getAllBooking().subscribe();
     this.hotelService.getAllHotels().subscribe();
@@ -68,7 +65,6 @@ export class SearchComponent implements OnInit {
   }
 
   filterHotelByDate(): void {
-    console.log('filter');
     const start = moment(this.searchForm.value.date.begin).format('YYYY-MM-DD');
     const end = moment(this.searchForm.value.date.end).format('YYYY-MM-DD');
     combineLatest(this.booking$, this.hotels$)
@@ -86,16 +82,23 @@ export class SearchComponent implements OnInit {
             (moment(booking.startDate).format('YYYY-MM-DD') <= end &&
               moment(booking.endDate).format('YYYY-MM-DD') >= end)
         );
-        hotels.map(h => h.rooms.map(room => (room.booked = false)));
+        const items = JSON.parse(JSON.stringify(hotels));
+        console.log(items);
+        items.map(h =>
+          h.rooms.map(room => {
+            room.booked = false;
+            console.log(room);
+          })
+        );
         bookedRooms.map((booking: Booking) =>
           booking.rooms.map((r: Room) => {
             const hotelId = r.hotel.id;
-            const hotel = hotels.find(h => h.id === hotelId);
+            const hotel = items.find(h => h.id === hotelId);
             const room = hotel.rooms.find(x => x.id === r.id);
             room.booked = true;
           })
         );
-        this.store.set('hotels', hotels);
+        this.store.set('hotels', items);
       });
   }
 
@@ -110,7 +113,6 @@ export class SearchComponent implements OnInit {
     this.filterHotels$ = this.hotels$.pipe(
       map(hotels => hotels.filter(hotel => hotel.location === location)),
       tap(result => {
-        console.log(result);
         if (result.length === 0) {
           this.filterHotels$ = this.hotels$;
         }

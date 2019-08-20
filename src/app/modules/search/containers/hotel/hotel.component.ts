@@ -23,7 +23,6 @@ export class HotelComponent implements OnInit {
     this.id = +this.route.snapshot.paramMap.get('id');
 
     this.hotelService.getHotel(this.id).subscribe((data: Hotel) => {
-      console.log(data);
       this.hotel = data;
     });
   }
