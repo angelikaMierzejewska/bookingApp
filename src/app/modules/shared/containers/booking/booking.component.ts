@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { filter, map, take } from 'rxjs/operators';
-import { Store } from '../../../../../store';
 import { UserBooking } from '../../../search/resources/interfaces/user-booking.interface';
+import { SearchFacade } from '../../../search/+state/search.facade';
 
 @Component({
   selector: 'app-booking',
@@ -14,24 +13,13 @@ export class BookingComponent implements OnInit {
 
   @Input() userName: string;
 
-  constructor(private store: Store) {}
+  constructor(private searchFacade: SearchFacade) {}
 
   ngOnInit(): void {
     this.getAllUserBooking();
   }
 
   getAllUserBooking(): void {
-    this.store
-      .select<UserBooking[]>('booking')
-      .pipe(
-        filter(val => val.length > 0),
-        take(1),
-        map((bookings: UserBooking[]) =>
-          bookings.filter((val: UserBooking) => val.user === this.userName)
-        )
-      )
-      .subscribe((booking: UserBooking[]) => {
-        this.dataSource = booking;
-      });
+    this.searchFacade.bookings$.subscribe(val => (this.dataSource = val));
   }
 }

@@ -31,9 +31,4 @@
     <sat-datepicker-toggle matSuffix [for]="resultPicker"></sat-datepicker-toggle>
   </mat-form-field>
 </form>
-<app-search-result [filterHotels]="filterHotels$ | async"></app-search-result>
-
-<div *ngFor="let item of booking$ | async">
-  {{ item.endDate }}
-  {{ item.startDate }}
-</div>
+<app-search-result [filterHotels]="filterHotels"></app-search-result>

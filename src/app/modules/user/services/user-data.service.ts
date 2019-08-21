@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../resources/models/User';
-import { Store } from '../../../../store';
 import { tap } from 'rxjs/operators';
+import { UserFacade } from '../+state/user.facade';
+import { SearchFacade } from '../../search/+state/search.facade';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +12,22 @@ import { tap } from 'rxjs/operators';
 export class UserDataService {
   private urlBase = 'http://185.157.80.88:8080';
 
-  constructor(private httpClient: HttpClient, private store: Store) {}
+  constructor(
+    private httpClient: HttpClient,
+    private userFacade: UserFacade,
+    private searchFacade: SearchFacade
+  ) {}
 
   public loginUser(userLogin): Observable<{ id_token: string }> {
     return this.httpClient
       .post<{ id_token: string }>(this.urlBase + '/api/authenticate', userLogin)
       .pipe(
         tap(response => {
-          this.store.set('token', response.id_token);
-          this.getUser(userLogin.username).subscribe();
+          localStorage.setItem('token', response.id_token);
+          this.userFacade.setToken(response.id_token);
+          this.getUserData().subscribe();
+          this.searchFacade.getBookings();
+          this.searchFacade.getHotels();
         })
       );
   }
@@ -31,8 +39,16 @@ export class UserDataService {
   public getUser(username): Observable<User> {
     return this.httpClient.get<User>(this.urlBase + '/api/users/' + username).pipe(
       tap((response: User) => {
-        this.store.set('user', response);
         localStorage.setItem('user', JSON.stringify(response));
+      })
+    );
+  }
+
+  public getUserData(): Observable<User> {
+    return this.httpClient.get<User>(this.urlBase + '/api/account').pipe(
+      tap((response: User) => {
+        localStorage.setItem('user', JSON.stringify(response));
+        this.userFacade.setUser(response);
       })
     );
   }

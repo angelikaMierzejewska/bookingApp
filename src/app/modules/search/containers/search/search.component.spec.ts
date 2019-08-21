@@ -6,15 +6,12 @@ import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material';
 import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
-import { RouterModule } from '@angular/router';
-import { Store } from '../../../../../store';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpRequestInterceptor } from '../../../shared/interceptors/http-request.interceptor';
 import { SearchResultComponent } from '../../components/search-result/search-result.component';
 import { FacalitiesComponent } from '../facalities/facalities.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
-import { Hotel } from '../../resources/models/hotel.model';
+
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SearchComponent', () => {
@@ -39,7 +36,6 @@ describe('SearchComponent', () => {
       ],
 
       providers: [
-        Store,
         { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
         { provide: APP_BASE_HREF, useValue: '/' }
       ]

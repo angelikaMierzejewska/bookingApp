@@ -4,8 +4,8 @@ import { UserDataService } from '../../services/user-data.service';
 import { MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs';
 import { User } from '../../resources/models/User';
-import { Store } from '../../../../../store';
-import { LoginUser } from '../../resources/interfaces/login-user.interface';
+import { LoginUserInterface } from '../../resources/interfaces/login-user.interface';
+import { UserFacade } from '../../+state/user.facade';
 
 @Component({
   selector: 'app-login',
@@ -37,12 +37,12 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userDataService: UserDataService,
     private dialogRef: MatDialogRef<LoginComponent>,
-    private store: Store
+    private userFacade: UserFacade
   ) {}
 
   public ngOnInit(): void {
-    this.token$ = this.store.select<string>('token');
-    this.user$ = this.store.select<User>('user');
+    this.token$ = this.userFacade.token$;
+    this.user$ = this.userFacade.user$;
   }
 
   public submit(): void {
@@ -51,21 +51,13 @@ export class LoginComponent implements OnInit {
       if (this.registerForm) {
         this.userDataService.registerUser(this.loginForm.value).subscribe();
       } else {
-        const login: LoginUser = {
+        const login: LoginUserInterface = {
           username: this.loginForm.value.login,
           password: this.loginForm.value.password,
           rememberMe: this.loginForm.value.rememberMe
         };
-
-        this.userDataService.loginUser(login).subscribe(
-          data => {
-            localStorage.setItem('token', data.id_token);
-            this.dialogRef.close();
-          },
-          error => {
-            console.log('Error', error);
-          }
-        );
+        this.userFacade.loginUser(login);
+        this.dialogRef.close();
       }
     }
   }

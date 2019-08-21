@@ -8,8 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '../../modules/shared/shared.module';
 import { UserModule } from '../../modules/user/user.module';
 import { SearchModule } from '../../modules/search/search.module';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { Store } from '../../../store';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpRequestInterceptor } from '../../modules/shared/interceptors/http-request.interceptor';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -32,7 +31,6 @@ describe('ToolBarComponent', () => {
       ],
 
       providers: [
-        Store,
         { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
         { provide: APP_BASE_HREF, useValue: '/' }
       ]

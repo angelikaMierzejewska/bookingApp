@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HotelComponent } from './hotel.component';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Hotel } from '../../resources/models/hotel.model';
+import { ActivatedRoute } from '@angular/router';
 import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,9 +12,7 @@ import { FacalitiesComponent } from '../facalities/facalities.component';
 import { RoomsComponent } from '../rooms/rooms.component';
 import { SearchResultComponent } from '../../components/search-result/search-result.component';
 import { AvailableRoomsComponent } from '../../components/available-rooms/available-rooms.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Store } from '../../../../../store';
-import { of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
@@ -23,7 +20,7 @@ describe('HotelComponent', () => {
   let component: HotelComponent;
   let fixture: ComponentFixture<HotelComponent>;
   let mockHotelService;
-  let route: ActivatedRoute;
+  // const route: ActivatedRoute;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,7 +44,7 @@ describe('HotelComponent', () => {
         HttpClientTestingModule
         // RouterModule.forRoot([])
       ],
-      providers: [HttpClient, Store, { provide: APP_BASE_HREF, useValue: '/' }]
+      providers: [HttpClient, { provide: APP_BASE_HREF, useValue: '/' }]
     }).compileComponents();
   }));
 
@@ -56,7 +53,7 @@ describe('HotelComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     mockHotelService = jasmine.createSpyObj('HotelService', ['getAllHotels', 'getHotel']);
-    component = new HotelComponent(mockHotelService, route);
+    // component = new HotelComponent(mockHotelService, route);
   });
 
   it('should create', () => {

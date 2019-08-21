@@ -10,7 +10,6 @@ import { UserModule } from './modules/user/user.module';
 import { SearchModule } from './modules/search/search.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { UserDataService } from './modules/user/services/user-data.service';
-import { Store } from '../store';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('AppComponent', () => {
@@ -28,7 +27,7 @@ describe('AppComponent', () => {
         RouterTestingModule
       ],
       declarations: [AppComponent, ToolBarComponent],
-      providers: [UserDataService, HttpClient, Store]
+      providers: [UserDataService, HttpClient]
     }).compileComponents();
   }));
 

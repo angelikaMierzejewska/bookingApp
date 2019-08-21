@@ -1,11 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HotelService } from '../../services/hotel.service';
 import { Hotel } from '../../resources/models/hotel.model';
 import { Observable, combineLatest } from 'rxjs';
 import { map, startWith, take, tap, filter } from 'rxjs/operators';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '../../../../../store';
 import { BookingService } from '../../services/booking.service';
 import { Booking } from '../../resources/models/booking.model';
 import * as moment from 'moment';
@@ -23,10 +22,12 @@ export class SearchComponent implements OnInit {
   hotelsLoading$ = this.searchFacade.hotelsLoading$;
   booking$: Observable<Booking[]> = this.searchFacade.bookings$;
   locations: string[] = [];
+  filterHotels: Hotel[] = [];
+
   private locationControl = new FormControl();
   private minDate = new Date();
-  private filterHotels$: Observable<Hotel[]> = this.searchFacade.hotels$;
   private filteredOptions$: Observable<string[]>;
+  private hotels: Hotel[] = [];
   private searchForm = this.formBuilder.group({
     locationControl: new FormControl(),
     date: [
@@ -40,16 +41,12 @@ export class SearchComponent implements OnInit {
   constructor(
     private hotelService: HotelService,
     private router: Router,
-    private store: Store,
     private formBuilder: FormBuilder,
     private bookingService: BookingService,
     private searchFacade: SearchFacade
   ) {}
 
   ngOnInit() {
-    this.searchFacade.getBookings();
-    this.searchFacade.getHotels();
-
     const date = { ...this.searchForm.value.date };
     this.searchFacade.setBookingDate(date);
     this.bookingService.getAllBooking().subscribe();
@@ -57,6 +54,10 @@ export class SearchComponent implements OnInit {
     this.getAllLocations();
     this.filteredLocations();
     this.filterHotelByDate();
+    this.hotels$.subscribe(val => {
+      this.hotels = val;
+      this.filterHotels = val;
+    });
   }
 
   filterHotelByDate(): void {
@@ -87,7 +88,7 @@ export class SearchComponent implements OnInit {
             room.booked = true;
           })
         );
-        setTimeout(() => this.searchFacade.setHotels(items));
+        this.searchFacade.setHotels(items);
       });
   }
 
@@ -99,14 +100,17 @@ export class SearchComponent implements OnInit {
   }
 
   public filterHotelByLocation(location: string): void {
-    this.filterHotels$ = this.hotels$.pipe(
-      map(hotels => hotels.filter(hotel => hotel.location === location)),
-      tap(result => {
-        if (result.length === 0) {
-          this.filterHotels$ = this.hotels$;
-        }
-      })
-    );
+    this.hotels$
+      .pipe(
+        map(hotels => hotels.filter(hotel => hotel.location === location)),
+        tap(result => {
+          this.filterHotels = result;
+          if (result.length === 0) {
+            this.filterHotels = this.hotels;
+          }
+        })
+      )
+      .subscribe();
   }
 
   public filteredLocations(): void {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../../resources/models/User';
-import { Store } from '../../../../../store';
+import { UserFacade } from '../../+state/user.facade';
 
 @Component({
   selector: 'app-profile',
@@ -9,11 +9,9 @@ import { Store } from '../../../../../store';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  private user$: Observable<User>;
+  private user$: Observable<User> = this.userFacade.user$;
 
-  constructor(private store: Store) {}
+  constructor(private userFacade: UserFacade) {}
 
-  ngOnInit(): void {
-    this.user$ = this.store.select<User>('user');
-  }
+  ngOnInit(): void {}
 }

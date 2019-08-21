@@ -6,9 +6,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from '../../../shared/modules/custom-material.module';
 import { UserDataService } from '../../services/user-data.service';
-import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Store } from '../../../../../store';
 import { AppModule } from '../../../../app.module';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -29,7 +27,7 @@ describe('BookingDetailComponent', () => {
         // RouterModule.forRoot([])
         RouterTestingModule
       ],
-      providers: [UserDataService, HttpClient, Store, { provide: APP_BASE_HREF, useValue: '/' }]
+      providers: [UserDataService, HttpClient, { provide: APP_BASE_HREF, useValue: '/' }]
     }).compileComponents();
     fixture = TestBed.createComponent(BookingDetailComponent);
     component = fixture.componentInstance;

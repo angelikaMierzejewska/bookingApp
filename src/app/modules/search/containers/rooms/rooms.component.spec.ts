@@ -6,9 +6,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material';
 import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
-import { RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS, HttpClient, HttpHandler } from '@angular/common/http';
-import { Store } from '../../../../../store';
 import { HttpRequestInterceptor } from '../../../shared/interceptors/http-request.interceptor';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -31,7 +29,6 @@ describe('RoomsComponent', () => {
         RouterTestingModule
       ],
       providers: [
-        Store,
         HttpClient,
         HttpHandler,
         { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },

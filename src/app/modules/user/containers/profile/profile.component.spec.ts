@@ -5,8 +5,6 @@ import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomMaterialModule } from '../../../shared/modules/custom-material.module';
-import { RouterModule } from '@angular/router';
-import { Store } from '../../../../../store';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ProfileComponent', () => {
@@ -24,7 +22,7 @@ describe('ProfileComponent', () => {
         CustomMaterialModule,
         RouterTestingModule
       ],
-      providers: [Store, { provide: APP_BASE_HREF, useValue: '/' }]
+      providers: [{ provide: APP_BASE_HREF, useValue: '/' }]
     }).compileComponents();
   }));
 

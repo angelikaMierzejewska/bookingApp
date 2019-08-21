@@ -3,16 +3,17 @@ import { CanActivate } from '@angular/router';
 import { switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { SearchFacade } from '../../search/+state/search.facade';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(public authSevice: AuthService) {}
+  constructor(public authSevice: AuthService, private searchFacade: SearchFacade) {}
 
   public canActivate() {
     return this.authSevice.isAuthenticated().pipe(
-      tap(res => console.log(res)),
+      tap(res => {}),
       switchMap((res: string) => of(!!res.length))
     );
   }

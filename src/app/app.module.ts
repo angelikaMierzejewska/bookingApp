@@ -9,7 +9,6 @@ import { SearchModule } from './modules/search/search.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpRequestInterceptor } from './modules/shared/interceptors/http-request.interceptor';
-import { Store } from '../store';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -38,7 +37,7 @@ import { reducers } from './reducers';
       maxAge: 50
     })
   ],
-  providers: [Store, { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }],
 
   bootstrap: [AppComponent]
 })

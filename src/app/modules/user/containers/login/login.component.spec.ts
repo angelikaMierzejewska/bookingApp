@@ -8,7 +8,6 @@ import { CustomMaterialModule } from '../../../shared/modules/custom-material.mo
 import { RouterModule } from '@angular/router';
 import { UserDataService } from '../../services/user-data.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
-import { Store } from '../../../../../store';
 import { MatDialogRef } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -34,7 +33,7 @@ describe('LoginComponent', () => {
         UserDataService,
         HttpClient,
         HttpHandler,
-        Store,
+
         { provide: MatDialogRef, useValue: {} },
         { provide: APP_BASE_HREF, useValue: '/' }
       ]

@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Hotel } from '../resources/models/hotel.model';
-import { groupBy, map, mergeMap, tap, toArray } from 'rxjs/operators';
-import { Store } from '../../../../store';
-import { RoomService } from './room.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,38 +10,14 @@ import { RoomService } from './room.service';
 export class HotelService {
   private urlBase = 'http://185.157.80.88:8080';
 
-  constructor(
-    private httpClient: HttpClient,
-    private store: Store,
-    private roomService: RoomService
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   getAllHotels(): Observable<Hotel[]> {
     return this.httpClient.get<Hotel[]>(this.urlBase + '/api/hotels').pipe(
       tap(response => {
         response.map(hotel => hotel.rooms.map(room => (room.booked = false)));
-        this.store.set('hotels', response);
       })
     );
-    // tap(response => {
-    //   this.roomService.getAllRooms().subscribe(data => {
-    //     from(data)
-    //       .pipe(
-    //         tap(room => {
-    //           room.booked = false;
-    //         }),
-    //         groupBy(room => room.hotel.id),
-    //         mergeMap(group => group.pipe(toArray())),
-    //         map(x => {
-    //           const hotel: Hotel = response.find(h => h.id === x[0].hotel.id);
-    //           hotel.rooms = x;
-    //         }),
-    //         tap(() => this.store.set('hotels', response))
-    //       )
-    //       .subscribe();
-    //   });
-    // })
-    // ();
   }
 
   getHotel(id: number): Observable<Hotel> {

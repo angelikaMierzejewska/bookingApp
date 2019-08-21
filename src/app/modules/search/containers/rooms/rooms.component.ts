@@ -1,15 +1,14 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { RoomService } from '../../services/room.service';
 import { Room } from '../../resources/models/room.model';
-import { Store } from '../../../../../store';
-import { filter, map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { BookingService } from '../../services/booking.service';
 import { MatSnackBar } from '@angular/material';
-import { Hotel } from '../../resources/models/hotel.model';
 import { UserBooking } from '../../resources/interfaces/user-booking.interface';
-import { Observable } from 'rxjs';
 import { SearchFacade } from '../../+state/search.facade';
 import { BookingDate } from '../../resources/interfaces/booking-date.interface';
+import { Observable } from 'rxjs';
+import { User } from '../../../user/resources/models/User';
+import { UserFacade } from '../../../user/+state/user.facade';
 
 @Component({
   selector: 'app-rooms',
@@ -17,32 +16,41 @@ import { BookingDate } from '../../resources/interfaces/booking-date.interface';
   styleUrls: ['./rooms.component.scss']
 })
 export class RoomsComponent implements OnInit {
-  disableButton = false;
   @Input() rooms: Room[];
   @Output() bookRoom = new EventEmitter<boolean>();
-  bookingD: Observable<BookingDate>;
+  bookingDate: BookingDate;
+  disableButton = false;
+  private user$: Observable<User> = this.userFacade.user$;
+  private user: User;
 
   constructor(
-    private roomService: RoomService,
-    private store: Store,
     private bookingService: BookingService,
     private snackBar: MatSnackBar,
-    private searchFacade: SearchFacade
+    private searchFacade: SearchFacade,
+    private userFacade: UserFacade
   ) {}
 
   ngOnInit(): void {
-    this.bookingD = this.searchFacade.getBookingDate();
+    this.getBookingDate();
+    this.user$.subscribe(val => (this.user = val));
+  }
+
+  getBookingDate(): void {
+    this.searchFacade
+      .getBookingDate()
+      .pipe(take(1))
+      .subscribe(val => (this.bookingDate = val));
   }
 
   onBooking(id: number): void {
-    if (this.store.value.user) {
+    if (this.user) {
       const bookingRoom: Room[] = [];
       bookingRoom.push(this.rooms.find(room => room.id === id));
 
       const data: UserBooking = {
-        user: this.store.value.user.login,
-        endDate: this.store.value.bookingDate.end,
-        startDate: this.store.value.bookingDate.begin,
+        user: this.user.login,
+        endDate: this.bookingDate.end,
+        startDate: this.bookingDate.begin,
         rooms: bookingRoom
       };
       this.toggleBooking(true);
@@ -67,18 +75,15 @@ export class RoomsComponent implements OnInit {
   }
 
   updateStore(response: UserBooking): void {
-    this.store
-      .select<Hotel[]>('hotels')
-      .pipe(take(1))
-      .subscribe(
-        hotels => {
-          const hotel = hotels.find(h => h.id === response.rooms[0].hotel.id);
-          const room = hotel.rooms.find(r => r.id === response.rooms[0].id);
-          room.booked = true;
-          this.store.set('hotels', hotels);
-        },
-        error => {}
-      );
+    let hotelsArray = [];
+    this.searchFacade.hotels$.subscribe(
+      hotels => (hotelsArray = JSON.parse(JSON.stringify(hotels)))
+    );
+
+    const hotel = hotelsArray.find(h => h.id === response.rooms[0].hotel.id);
+    const room = hotel.rooms.find(r => r.id === response.rooms[0].id);
+    room.booked = true;
+    this.searchFacade.setHotels(hotelsArray);
   }
 
   public openSnackBar(message: string, action: string): void {
